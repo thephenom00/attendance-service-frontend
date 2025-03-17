@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import img from "../../imgs/logo.jpeg";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Header = () => {
         <header className="flex items-center justify-between py-4 px-35 bg-white shadow-md">
         <div onClick={() => navigate('/')} className="flex items-center space-x-2 hover:cursor-pointer">
             <img
-            src={"/imgs/logo.jpeg"}
+            src={img}
             alt="Logo"
             className="w-10 h-10 rounded-full object-cover "
             />

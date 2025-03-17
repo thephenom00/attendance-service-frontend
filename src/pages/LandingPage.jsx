@@ -1,9 +1,10 @@
-import { ChevronRight, Calendar, ClipboardList, Shield, UserPlus } from 'lucide-react';
+import { ChevronRight, Calendar, ClipboardList, UserPlus } from 'lucide-react';
 import React from 'react';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
+import img from "../../imgs/logo-better.jpg";
 
-const Index = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -41,7 +42,7 @@ const Index = () => {
               <div className="rounded-2xl animate-scale-in">
                 <div className="relative w-100 h-100 overflow-hidden rounded-2xl">
                   <img 
-                    src={"/imgs/logo-better.jpg"}
+                    src={img}
                     className="absolute inset-0 w-full h-full object-cover"
                     alt="Hero Logo"
                   />
@@ -125,4 +126,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default LandingPage;

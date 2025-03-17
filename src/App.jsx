@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import Index from './pages/Index.tsx'
+import LandingPage from './pages/LandingPage.jsx'
 import AuthPages from './pages/authentication/AuthPages.jsx'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header'; 
@@ -13,7 +13,7 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<AuthPages currentPage="login" setUser={setUser} />} />
         <Route path="/register" element={<AuthPages currentPage="register" setUser={setUser} />} />
       </Routes>
