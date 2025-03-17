@@ -23,20 +23,21 @@ const Index = () => {
                 </h1>
               </div>
               <p className="text-lg text-gray-600 md:pr-10">
-                Chytrá platforma, která usnadní život trenérům i rodičům. Sledujte docházku online a bez zbytečného papírování.              </p>
+                Chytrá platforma, která usnadní život trenérům i rodičům. Sledujte docházku online a bez zbytečného papírování.
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                  <Button onClick={() => navigate('/register')} size="lg" className="w-full sm:w-auto button-hover">
+                  <Button onClick={() => navigate('/register')} size="lg" className="w-[200px] sm:w-auto button-hover">
                     Vyzkoušet nyní
                     <ChevronRight size={16} className="ml-1" />
                   </Button>
-                  <Button onClick={() => navigate('/login')} variant="outline" size="lg" className="w-full sm:w-auto button-hover">
+                  <Button onClick={() => navigate('/login')} variant="outline" size="lg" className="w-[150px] sm:w-auto button-hover">
                     Přihlásit se
                   </Button>
               </div>
             </div>
             
             {/* Hero Image */}
-            <div className="flex justify-end items-center w-full p-6">
+            <div className="hidden md:flex justify-end items-center w-full p-6">
               <div className="rounded-2xl animate-scale-in">
                 <div className="relative w-100 h-100 overflow-hidden rounded-2xl">
                   <img 
