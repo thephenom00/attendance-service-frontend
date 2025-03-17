@@ -41,7 +41,7 @@ const Index = () => {
               <div className="rounded-2xl animate-scale-in">
                 <div className="relative w-100 h-100 overflow-hidden rounded-2xl">
                   <img 
-                    src="/imgs/logo-better.jpg"
+                    src={"/imgs/logo-better.jpg"}
                     className="absolute inset-0 w-full h-full object-cover"
                     alt="Hero Logo"
                   />
