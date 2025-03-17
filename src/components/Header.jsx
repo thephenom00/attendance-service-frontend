@@ -8,7 +8,7 @@ const Header = () => {
         <header className="flex items-center justify-between py-4 px-35 bg-white shadow-md">
         <div onClick={() => navigate('/')} className="flex items-center space-x-2 hover:cursor-pointer">
             <img
-            src="src/assets/logo.jpeg"
+            src="/imgs/logo.jpeg"
             alt="Logo"
             className="w-10 h-10 rounded-full object-cover "
             />
