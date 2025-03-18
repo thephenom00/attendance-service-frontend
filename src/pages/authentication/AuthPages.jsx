@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Alert, Snackbar } from "@mui/material";
 
 const AuthPages = ({ currentPage, setUser }) => {
   const navigate = useNavigate();
@@ -10,7 +11,16 @@ const AuthPages = ({ currentPage, setUser }) => {
     setIsLogin(currentPage === "login");
   }, [currentPage]);
 
-  // Form states
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "error", // Can be success, info, warning too
+  });
+
+  const handleCloseNotification = () => {
+    setNotification({ ...notification, open: false });
+  };
+
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
     firstName: "",
@@ -26,10 +36,30 @@ const AuthPages = ({ currentPage, setUser }) => {
     if (isLogin) {
       console.log("Login:", loginForm);
 
-      setUser({ email: loginForm.email });
-      navigate("/dashboard");
+      if (
+        loginForm.email === "test@example.com" &&
+        loginForm.password === "123"
+      ) {
+        setUser({ email: loginForm.email });
+        navigate("/dashboard");
+      } else {
+        setNotification({
+          open: true,
+          message: "Neplatné přihlašovací údaje!",
+          severity: "error",
+        });
+      }
     } else {
       console.log("Register:", registerForm);
+
+      if (registerForm.password !== registerForm.confirmPassword) {
+        setNotification({
+          open: true,
+          message: "Hesla se neshodují!",
+          severity: "error",
+        });
+        return;
+      }
 
       setUser({ email: registerForm.email });
       navigate("/dashboard");
@@ -37,12 +67,23 @@ const AuthPages = ({ currentPage, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center p-4 pt-[50px]">
-      <div
-        className={`bg-white rounded-lg shadow-lg w-full max-w-md transition-all duration-400 ease-in-out ${
-          isLogin ? "h-[380px] p-6" : "h-[700px] p-6"
-        }`}
+    <div className="min-h-screen bg-gray-50 p-4 pt-[50px]">
+      {/* Snackbar Notification */}
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={6000}
+        onClose={handleCloseNotification}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
+        <Alert
+          onClose={handleCloseNotification}
+          severity={notification.severity}
+          sx={{ width: "100%" }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
         <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
           <button
             onClick={() => setIsLogin(true)}
@@ -75,15 +116,20 @@ const AuthPages = ({ currentPage, setUser }) => {
                   Jméno
                 </label>
                 <input
+                  placeholder="Petr"
                   type="text"
                   required
                   value={registerForm.firstName}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const onlyLettersFirstName = e.target.value.replace(
+                      /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
+                      ""
+                    );                
                     setRegisterForm({
                       ...registerForm,
-                      firstName: e.target.value,
-                    })
-                  }
+                      firstName: onlyLettersFirstName,
+                    });
+                  }}
                   className="w-full p-2 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-judo-blue"
                 />
               </div>
@@ -92,15 +138,20 @@ const AuthPages = ({ currentPage, setUser }) => {
                   Příjmení
                 </label>
                 <input
+                  placeholder="Hároš"
                   type="text"
                   required
                   value={registerForm.lastName}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const onlyLettersLastName = e.target.value.replace(
+                      /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
+                      ""
+                    );                
                     setRegisterForm({
                       ...registerForm,
-                      lastName: e.target.value,
-                    })
-                  }
+                      lastName: onlyLettersLastName,
+                    });
+                  }}
                   className="w-full p-2 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-judo-blue"
                 />
               </div>
@@ -110,14 +161,18 @@ const AuthPages = ({ currentPage, setUser }) => {
                 </label>
                 <input
                   type="tel"
+                  placeholder="777888999"
+                  maxLength={9}
+                  minLength={9}
                   required
                   value={registerForm.phoneNumber}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
                     setRegisterForm({
                       ...registerForm,
-                      phoneNumber: e.target.value,
-                    })
-                  }
+                      phoneNumber: onlyNums,
+                    });
+                  }}
                   className="w-full p-2 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-judo-blue"
                 />
               </div>
@@ -129,6 +184,7 @@ const AuthPages = ({ currentPage, setUser }) => {
               E-mail
             </label>
             <input
+              placeholder="ahoj@email.cz"
               type="email"
               required
               value={isLogin ? loginForm.email : registerForm.email}
@@ -147,7 +203,9 @@ const AuthPages = ({ currentPage, setUser }) => {
               Heslo
             </label>
             <input
+              placeholder="******"
               type={showPassword ? "text" : "password"}
+              minLength={6}
               required
               value={isLogin ? loginForm.password : registerForm.password}
               onChange={(e) => {
@@ -169,8 +227,10 @@ const AuthPages = ({ currentPage, setUser }) => {
                 Potvrzení hesla
               </label>
               <input
+                placeholder="******"
                 type={showPassword ? "text" : "password"}
                 required
+                minLength={6}
                 value={registerForm.confirmPassword}
                 onChange={(e) =>
                   setRegisterForm({
