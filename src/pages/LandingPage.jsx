@@ -11,7 +11,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header/>
-      <section className="pt-24 pb-16 md:pt-32 md:pb-24 px-4">
+      <section className="pt-16 pb-16 md:pt-20 md:pb-24 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 md:space-y-8 animate-slide-up">
@@ -65,7 +65,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 md:py-20 px-4 bg-gradient-to-b from-white to-gray-100">
+      <section className="py-16 md:py-10 px-4 bg-gradient-to-b from-white to-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

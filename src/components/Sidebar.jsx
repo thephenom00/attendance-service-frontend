@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Home, FileText, Calendar, ClipboardList, BarChart, LogOut } from 'lucide-react';
+import { Home, FileText, Calendar, ClipboardList, BarChart, LogOut, Menu } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [role, setRole] = useState(null);
+  const [isOpen, setIsOpen] = useState(true); // Always true on large screens
 
   useEffect(() => {
-    const storedRole = localStorage.getItem('role'); // Assuming role is stored here
+    const storedRole = localStorage.getItem('role');
     setRole(storedRole);
+
+    // Check screen size at load
+    if (window.innerWidth < 768) {
+      setIsOpen(false); // Close on small screens by default
+    } else {
+      setIsOpen(true); // Open on big screens
+    }
   }, []);
 
   const trainerLinks = [
@@ -29,8 +37,20 @@ const Sidebar = () => {
   const links = role === 'parent' ? parentLinks : trainerLinks;
 
   return (
-    <aside className="w-20 sm:w-60 bg-white min-h-screen left-0">
-      <nav className="flex flex-col space-y-2 px-2 sm:px-4 pt-6">
+    <aside
+      className={`${
+        isOpen ? 'w-60' : 'w-20'
+      } bg-white min-h-screen left-0 transition-all duration-300 flex flex-col`}
+    >
+      {/* Hamburger only visible on small screens */}
+      <div className="flex items-center justify-between p-4 md:hidden">
+        <button onClick={() => setIsOpen(!isOpen)} className="hover:cursor-pointer">
+          <Menu size={24} />
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <nav className={`flex flex-col ${isOpen ? 'px-4' : 'px-2'} pt-4 flex-grow`}>
         {links.map((link) => {
           const isActive = location.pathname === link.path;
           return (
@@ -44,12 +64,17 @@ const Sidebar = () => {
               }`}
             >
               <link.icon size={20} />
-              {/* Hide text on small screens */}
-              <span className="ml-3 font-medium hidden sm:inline">{link.name}</span>
+              <span className={`ml-3 font-medium transition-opacity ${
+                isOpen ? 'opacity-100' : 'opacity-0 hidden sm:inline'
+              }`}>
+                {link.name}
+              </span>
             </button>
           );
         })}
-        <div className="mt-4 border-t pt-4">
+
+        {/* Logout */}
+        <div className="mt-auto border-t pt-4">
           <button
             onClick={() => {
               localStorage.clear();
@@ -58,7 +83,11 @@ const Sidebar = () => {
             className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
           >
             <LogOut size={20} />
-            <span className="ml-3 font-medium hidden sm:inline">Logout</span>
+            <span className={`ml-3 font-medium transition-opacity ${
+              isOpen ? 'opacity-100' : 'opacity-0 hidden sm:inline'
+            }`}>
+              Logout
+            </span>
           </button>
         </div>
       </nav>
