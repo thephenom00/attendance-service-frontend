@@ -3,13 +3,14 @@ import React from "react";
 import Button from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import img from "../../imgs/logo-better.jpg";
+import Header from "../components/Header";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
+      <Header/>
       <section className="pt-24 pb-16 md:pt-32 md:pb-24 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -64,7 +65,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-b from-white to-gray-100">
+      <section className="py-16 md:py-20 px-4 bg-gradient-to-b from-white to-gray-100">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -110,9 +111,9 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 px-4">
+      <section className="py-16 md:py-20 px-4">
         <div className="container mx-auto max-w-5xl">
-          <div className="glass-card bg-blue-100 p-8 md:p-12 rounded-2xl text-center">
+          <div className="glass-card bg-gray-100 p-8 md:p-12 rounded-2xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Staň se jedním z nás!
             </h2>

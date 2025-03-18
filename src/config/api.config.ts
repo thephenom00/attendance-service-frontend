@@ -1,5 +1,5 @@
 const API_CONFIG = {
-    BASE_URL: 'https://attendance-service.up.railway.app',
+    BASE_URL: 'http://localhost:8080',
 
     ENDPOINTS: {
         HEALTH: '/health',

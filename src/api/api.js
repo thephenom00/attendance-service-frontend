@@ -23,7 +23,6 @@ const refreshTokenApi = async (refreshToken) => {
 const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
   const url = `${API_CONFIG.BASE_URL}${endpoint}`;
   const accessToken = localStorage.getItem("access_token");
-  console.log(accessToken);
   const headers = {
     ...API_CONFIG.HEADERS,
     ...(accessToken && accessToken !== "undefined"
@@ -46,7 +45,8 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
             localStorage.setItem("access_token", authResponse.accessToken);
             localStorage.setItem("refresh_token", authResponse.refreshToken);
             localStorage.setItem("email", email);
-
+            localStorage.setItem("role", authResponse.role);
+            console.log(authResponse)
             return fetchWithConfig(endpoint, options, noBody);
           } else {
             handleLogout();
@@ -80,9 +80,8 @@ export const ApiService = {
         localStorage.setItem("access_token", response.accessToken);
         localStorage.setItem("refresh_token", response.refreshToken);
         localStorage.setItem("email", email);
-        console.log("Login successful:", response);
-        console.log("Access token:", response.accessToken);
-        console.log("Refresh token:", response.refreshToken);
+        localStorage.setItem("role", response.role);
+        console.log(response)
       }
       return response;
     } catch (error) {
@@ -104,9 +103,8 @@ export const ApiService = {
           localStorage.setItem("access_token", response.accessToken);
           localStorage.setItem("refresh_token", response.refreshToken);
           localStorage.setItem("email", email);
-          console.log("Login successful:", response)
-          console.log("Access token:", response.accessToken)
-          console.log("Refresh token:", response.refreshToken)
+          localStorage.setItem("role", response.role)
+          console.log(response)
         }
         return response;
       } catch (error) {
