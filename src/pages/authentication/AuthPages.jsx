@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 const AuthPages = ({ currentPage, setUser }) => {
   const navigate = useNavigate();
@@ -38,8 +37,12 @@ const AuthPages = ({ currentPage, setUser }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gray-50 flex justify-center p-4 pt-[50px]">
+      <div
+        className={`bg-white rounded-lg shadow-lg w-full max-w-md transition-all duration-400 ease-in-out ${
+          isLogin ? "h-[380px] p-6" : "h-[700px] p-6"
+        }`}
+      >
         <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
           <button
             onClick={() => setIsLogin(true)}
@@ -57,10 +60,10 @@ const AuthPages = ({ currentPage, setUser }) => {
               !isLogin
                 ? "bg-white shadow-sm text-judo-blue font-semibold"
                 : "text-gray-600"
-                }`}
+            }`}
           >
             Registrace
-              </button>
+          </button>
         </div>
 
         {/* FORM */}
