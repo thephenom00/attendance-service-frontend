@@ -1,11 +1,12 @@
 const API_CONFIG = {
-    BASE_URL: 'https://localhost:8080',
+    BASE_URL: 'https://attendance-service.up.railway.app',
 
     ENDPOINTS: {
         HEALTH: '/health',
         AUTH: {
             LOGIN: '/auth/login',
-            REGISTER: '/auth/register'
+            REGISTER: '/auth/register',
+            REFRESH: '/auth/refresh'
         }
     },
 

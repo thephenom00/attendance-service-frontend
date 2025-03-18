@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
+import { ApiService } from "../../api/api.js";
 
 const AuthPages = ({ currentPage, setUser }) => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const AuthPages = ({ currentPage, setUser }) => {
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-    severity: "error", // Can be success, info, warning too
+    severity: "error",
   });
 
   const handleCloseNotification = () => {
@@ -31,44 +32,56 @@ const AuthPages = ({ currentPage, setUser }) => {
     confirmPassword: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const userEmail = isLogin ? loginForm.email : registerForm.email;
+    const initials = userEmail.split("@")[0].slice(0, 2).toUpperCase();
+
     if (isLogin) {
-      console.log("Login:", loginForm);
-
-      if (
-        loginForm.email === "test@example.com" &&
-        loginForm.password === "123"
-      ) {
-        setUser({ email: loginForm.email });
-        navigate("/dashboard");
-      } else {
+      try {
+        const data = await ApiService.login(
+          loginForm.email,
+          loginForm.password
+        );
+        if (data) {
+          setUser({ email: data.email, initials });
+          navigate("/dashboard");
+        }
+      } catch (error) {
         setNotification({
           open: true,
-          message: "Neplatné přihlašovací údaje!",
+          message: "Nesprávné přihlašovací údaje.",
           severity: "error",
         });
+        console.error("Login error:", error);
       }
-    } else {
-      console.log("Register:", registerForm);
-
-      if (registerForm.password !== registerForm.confirmPassword) {
+    } else { // REGISTER
+      try {
+        const data = await ApiService.register(
+          registerForm.firstName,
+          registerForm.lastName,
+          registerForm.phoneNumber,
+          registerForm.email,
+          registerForm.password,
+        );
+        if (data) {
+          setUser({ email: userEmail, initials });
+          navigate("/dashboard");
+        }
+      } catch (error) {
         setNotification({
           open: true,
-          message: "Hesla se neshodují!",
+          message: "Registrace selhala.",
           severity: "error",
         });
-        return;
+        console.error("Registration error:", error);
       }
-
-      setUser({ email: registerForm.email });
-      navigate("/dashboard");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pt-[50px]">
-      {/* Snackbar Notification */}
+
       <Snackbar
         open={notification.open}
         autoHideDuration={6000}
@@ -87,7 +100,7 @@ const AuthPages = ({ currentPage, setUser }) => {
         <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
           <button
             onClick={() => setIsLogin(true)}
-            className={`flex-1 py-2 rounded-md transition-all duration-300 ease-in-out ${
+            className={`flex-1 py-2 rounded-md transition-all duration-300 ease-in-out hover:cursor-pointer ${
               isLogin
                 ? "bg-white shadow-sm text-judo-blue font-semibold"
                 : "text-gray-600"
@@ -97,7 +110,7 @@ const AuthPages = ({ currentPage, setUser }) => {
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-2 rounded-md transition-all duration-300 ease-in-out ${
+            className={`flex-1 py-2 rounded-md transition-all duration-300 ease-in-out hover:cursor-pointer ${
               !isLogin
                 ? "bg-white shadow-sm text-judo-blue font-semibold"
                 : "text-gray-600"
@@ -124,7 +137,7 @@ const AuthPages = ({ currentPage, setUser }) => {
                     const onlyLettersFirstName = e.target.value.replace(
                       /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
                       ""
-                    );                
+                    );
                     setRegisterForm({
                       ...registerForm,
                       firstName: onlyLettersFirstName,
@@ -146,7 +159,7 @@ const AuthPages = ({ currentPage, setUser }) => {
                     const onlyLettersLastName = e.target.value.replace(
                       /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
                       ""
-                    );                
+                    );
                     setRegisterForm({
                       ...registerForm,
                       lastName: onlyLettersLastName,
@@ -257,7 +270,7 @@ const AuthPages = ({ currentPage, setUser }) => {
               <button
                 type="button"
                 onClick={() => navigate("/passwordRecovery")}
-                className="text-sm text-judo-blue hover:underline"
+                className="text-sm text-judo-blue hover:underline hover:cursor-pointer"
               >
                 Zapomenuté heslo?
               </button>
@@ -266,7 +279,7 @@ const AuthPages = ({ currentPage, setUser }) => {
 
           <button
             type="submit"
-            className="w-full bg-judo-blue text-white py-2 rounded-lg hover:bg-blue-800 transition-colors"
+            className="w-full bg-judo-blue text-white py-2 rounded-lg hover:bg-blue-800 transition-colors hover:cursor-pointer"
           >
             {isLogin ? "Přihlásit se" : "Registrovat"}
           </button>
