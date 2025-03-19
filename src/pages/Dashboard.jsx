@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
+import UpcomingTrainings from "../components/UpcomingTrainingsCard.jsx";
 
 const Dashboard = () => {
   return (
@@ -10,13 +11,8 @@ const Dashboard = () => {
       <div className="flex-grow flex flex-col">
         <Header variant="dashboard" />
 
-        <main className="flex-grow p-8 bg-gray-50">
-          <h1 className="mb-4 text-xl font-bold">Dashboard Content</h1>
-          {[...Array(30)].map((_, i) => (
-            <h1 key={i} className="mb-2">
-              TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT
-            </h1>
-          ))}
+        <main className="flex-grow p-8 bg-gray-50 space-y-8">
+          <UpcomingTrainings />
         </main>
       </div>
     </div>

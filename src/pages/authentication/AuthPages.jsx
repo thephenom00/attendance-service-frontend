@@ -24,7 +24,8 @@ const AuthPages = ({ currentPage, setUser }) => {
     setNotification({ ...notification, open: false });
   };
 
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  {/* *********************** REMOVE *********************** */}
+  const [loginForm, setLoginForm] = useState({ email: "parecek@gmail.com", password: "parecek@gmail.com" });
   const [registerForm, setRegisterForm] = useState({
     firstName: "",
     lastName: "",
@@ -38,6 +39,14 @@ const AuthPages = ({ currentPage, setUser }) => {
     e.preventDefault();
     setLoading(true);
     const userEmail = isLogin ? loginForm.email : registerForm.email;
+    localStorage.setItem('email', JSON.stringify(userEmail));
+
+    {/* *********************** REMOVE *********************** */}
+    if (loginForm.email === "parecek@gmail.com" && loginForm.password === "parecek@gmail.com") {
+      navigate("/dashboard");
+      return;
+    }
+    {/* *********************** REMOVE *********************** */}
 
     if (isLogin) {
       try {
@@ -46,7 +55,8 @@ const AuthPages = ({ currentPage, setUser }) => {
           loginForm.password
         );
         if (data) {
-          setUser({ email: data.email });
+          localStorage.setItem('firstName', JSON.stringify(data.firstName));
+          localStorage.setItem('lastName', JSON.stringify(data.lastName));
           navigate("/dashboard");
         }
       } catch (error) {
@@ -69,7 +79,8 @@ const AuthPages = ({ currentPage, setUser }) => {
           registerForm.password
         );
         if (data) {
-          setUser({ email: userEmail });
+          localStorage.setItem('firstName', JSON.stringify(data.firstName));
+          localStorage.setItem('lastName', JSON.stringify(data.lastName));
           navigate("/dashboard");
         }
       } catch (error) {

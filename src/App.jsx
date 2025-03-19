@@ -23,8 +23,8 @@ function App() {
         />
         <Route
           path="/dashboard"
-          element={<Dashboard setUser={setUser} />}
-        />
+          element={<Dashboard />}
+          />
       </Routes>
     </Router>
   );

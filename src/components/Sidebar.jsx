@@ -23,17 +23,17 @@ const Sidebar = () => {
   }, []);
 
   const trainerLinks = [
-    { name: "Dashboard", path: "/dashboard", icon: Home },
-    { name: "Trainings", path: "/trainings", icon: FileText },
-    { name: "Events", path: "/events", icon: Calendar },
+    { name: "Přehled", path: "/dashboard", icon: Home },
+    { name: "Tréninky", path: "/trainings", icon: FileText },
+    { name: "Akce", path: "/events", icon: Calendar },
     { name: "Report", path: "/report", icon: BarChart },
   ];
 
   const parentLinks = [
-    { name: "Dashboard", path: "/dashboard", icon: Home },
-    { name: "Register Training", path: "/schools", icon: FileText },
-    { name: "Events", path: "/events", icon: Calendar },
-    { name: "My Child", path: "/my-child", icon: ClipboardList },
+    { name: "Přehled", path: "/dashboard", icon: Home },
+    { name: "Příhlásit na trénink", path: "/schools", icon: FileText },
+    { name: "Akce", path: "/events", icon: Calendar },
+    { name: "Moje dítě", path: "/my-child", icon: ClipboardList },
   ];
 
   const links = role === "parent" ? parentLinks : trainerLinks;
@@ -60,11 +60,11 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-50 bg-white min-h-screen w-60 transition-transform duration-300 flex flex-col 
-          ${isOpen ? "translate-x-0" : "-translate-x-full"} 
-          md:translate-x-0 md:relative md:flex md:w-60 md:z-0
-        `}
-      >
+            fixed top-0 w-60 md:w-[300px] left-0 z-50 bg-white min-h-screen transition-transform duration-300 flex flex-col 
+            ${isOpen ? "translate-x-0" : "-translate-x-full"} 
+            md:translate-x-0 md:relative md:flex`}
+        >
+
         {/* Close Button on small screens */}
         <div className="flex items-center justify-end p-4 md:hidden">
           <button
@@ -98,8 +98,7 @@ const Sidebar = () => {
             );
           })}
 
-          {/* Logout */}
-          <div className="mt-auto border-t pt-4">
+          <div className="mt-auto border-t border-gray-300 pt-4">
             <button
               onClick={() => {
                 localStorage.clear();
@@ -109,7 +108,7 @@ const Sidebar = () => {
               className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
             >
               <LogOut size={20} />
-              <span className="ml-3 font-medium">Logout</span>
+              <span className="ml-3 font-medium">Odhlásit se</span>
             </button>
           </div>
         </nav>
