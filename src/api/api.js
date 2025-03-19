@@ -69,6 +69,7 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
 };
 
 export const ApiService = {
+  /* LOGIN REQUEST */
   login: async (email, password) => {
     try {
       const response = await fetchWithConfig("/auth/login", {
@@ -92,6 +93,8 @@ export const ApiService = {
       throw error;
     }
   },
+
+  /* LOGIN REQUEST */
   register: async (firstName, lastName, phoneNumber, email, password) => {
     try {
         const response = await fetchWithConfig("/auth/register/parent", {
@@ -110,5 +113,22 @@ export const ApiService = {
       } catch (error) {
         throw new Error("REGISTRATION_FAILED");
       }
+  },
+
+  /* FETCH ALL UPCOMING TRAININGS OF A TRAINER */
+  getTrainerUpcomingTrainings: async(email) => {
+    try {
+      const response = await fetchWithConfig(`/trainer/${email}/trainingUnit/upcoming`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      if (response) {
+        console.log(response)
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
   }
+
 };

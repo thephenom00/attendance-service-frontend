@@ -1,64 +1,74 @@
 import React from "react";
-import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { Calendar, Clock, Users, School, PersonStanding } from "lucide-react";
 
-const upcomingTrainings = [
+const dummyTrainings = [
   {
-    id: 1,
-    title: "Začátečníci",
-    date: "2023-10-25",
-    time: "17:00 - 18:30",
-    location: "ZŠ Hovnova",
-    attendees: 15,
-  },
-  ,
-  {
-    id: 2,
-    title: 'Pokročilí',
-    date: '2023-10-27',
-    time: '17:00 - 18:30',
-    location: 'ZŠ Na Kopci',
-    attendees: 30
+    id: 0,
+    location: "ZŠ Demo",
+    title: "Demo Trénink",
+    date: new Date(),
+    dayOfTheWeek: "Pondělí",
+    time: "17:00 - 18:00",
+    attendees: 0,
   },
   {
-    id: 3,
-    title: 'Závodníci',
-    date: '2023-10-30',
-    time: '17:00 - 18:30',
-    location: 'ZŠ Daleko',
-    attendees: 3
+    id: 0,
+    location: "ZŠ Demo II",
+    title: "Demo Trénink II",
+    date: new Date(),
+    dayOfTheWeek: "Středa",
+    time: "17:00 - 18:00",
+    attendees: 0,
   },
   {
-    id: 4,
-    title: 'Opice',
-    date: '2023-10-31',
-    time: '16:00 - 17:00',
-    location: 'ZŠ V Riti',
-    attendees: 10
-  }
+    id: 0,
+    location: "ZŠ Demo II",
+    title: "Demo Trénink II",
+    date: new Date(),
+    dayOfTheWeek: "Středa",
+    time: "17:00 - 18:00",
+    attendees: 0,
+  },
+  {
+    id: 0,
+    location: "ZŠ Demo II",
+    title: "Demo Trénink II",
+    date: new Date(),
+    dayOfTheWeek: "Středa",
+    time: "17:00 - 18:00",
+    attendees: 0,
+  },
 ];
 
-const UpcomingTrainings = () => {
+const UpcomingTrainings = ({ trainings }) => {
+  const displayedTrainings = trainings && trainings.length > 0 ? trainings : dummyTrainings;
+
+  
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-slate-800">
+        <h2 className="text-[25px] font-semibold text-slate-800">
           Nadcházející tréninky
         </h2>
       </div>
       <div
         className={`grid gap-4 ${
-          upcomingTrainings.length === 1
-            ? "grid-cols-1"
-            : "grid-cols-1 sm:grid-cols-2"
+          displayedTrainings.length === 1 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"
         }`}
       >
-        {upcomingTrainings.map((training) => (
+        {displayedTrainings.map((training) => (
           <div
             key={training.id}
             className="border border-slate-100 rounded-lg p-4 hover:border-dojo-blue/20 transition-all duration-200 cursor-pointer bg-white hover:bg-blue-50/30"
           >
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-medium text-slate-800">{training.title}</h3>
+              <div className="flex items-center justify-center">
+                <School className="w-7 h-7 mr-2 text-judo-blue" />
+                <h3 className="font-medium text-[21px] text-slate-800">
+                  {training.location}
+                </h3>
+              </div>
+
               <span className="text-sm px-2 py-1 bg-blue-50 text-dojo-blue rounded-full">
                 <Users size={14} className="inline mr-1" />
                 {training.attendees}
@@ -67,18 +77,16 @@ const UpcomingTrainings = () => {
 
             <div className="text-slate-600 space-y-2 text-sm">
               <div className="flex items-center">
-                <Calendar className="w-4 h-4 mr-2 text-judo-blue" />
-                <span>{new Date(training.date).toLocaleDateString()}</span>
+                <PersonStanding className="w-5 h-5 mr-2 text-judo-blue" />
+                <span className="text-[16px]">{training.title}</span>
               </div>
-
               <div className="flex items-center">
-                <Clock className="w-4 h-4 mr-2 text-judo-blue" />
-                <span>{training.time}</span>
+                <Calendar className="w-5 h-5 mr-2 text-judo-blue" />
+                <span className="text-[16px]">{training.dayOfTheWeek} {new Date(training.date).toLocaleDateString()}</span>
               </div>
-
               <div className="flex items-center">
-                <MapPin className="w-4 h-4 mr-2 text-judo-blue" />
-                <span>{training.location}</span>
+                <Clock className="w-5 h-5 mr-2 text-judo-blue" />
+                <span className="text-[16px]">{training.time}</span>
               </div>
             </div>
           </div>

@@ -60,7 +60,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={`
-            fixed top-0 w-60 md:w-[300px] left-0 z-50 bg-white min-h-screen transition-transform duration-300 flex flex-col 
+            fixed top-0 w-60 md:w-[250px] left-0 z-50 bg-white min-h-screen transition-transform duration-300 flex flex-col 
             ${isOpen ? "translate-x-0" : "-translate-x-full"} 
             md:translate-x-0 md:relative md:flex`}
         >
@@ -88,7 +88,7 @@ const Sidebar = () => {
                 }}
                 className={`flex items-center p-3 rounded-lg transition-colors hover:cursor-pointer ${
                   isActive
-                    ? "bg-judo-blue text-white"
+                    ? "bg-[#eef5ff] text-[#0177c8]"
                     : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
