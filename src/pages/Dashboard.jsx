@@ -7,62 +7,45 @@ import { ApiService } from "../api/api.js";
 
 const Dashboard = () => {
   const email = localStorage.getItem('email');
-  const [trainings, setTrainings] = useState([]);
+  const [upcomingTrainings, setUpcomingTrainings] = useState([]);
+  const [pastTrainings, setPastTrainings] = useState([]);
+
+  const getDayName = (dayIndex) => {
+    const days = ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'];
+    return days[dayIndex] || '';
+  };
+
+  const mapTrainingData = (training) => {
+    const date = new Date(training.date[0], training.date[1] - 1, training.date[2]);
+    const start = `${training.startTime[0].toString().padStart(2, '0')}:${training.startTime[1].toString().padStart(2, '0')}`;
+    const end = `${training.endTime[0].toString().padStart(2, '0')}:${training.endTime[1].toString().padStart(2, '0')}`;
+    const dayIndex = date.getDay();
+
+    return {
+      id: training.id,
+      location: training.schoolName,
+      title: training.name,
+      description: training.description,
+      date: `${date}`,
+      dayOfTheWeek: getDayName(dayIndex),
+      time: `${start} - ${end}`,
+      attendees: training.numberOfChildren
+    };
+  };
 
   useEffect(() => {
     const fetchTrainings = async () => {
       try {
-        const data = await ApiService.getTrainerUpcomingTrainings(email);
-        // Transform the data here
-        const mappedTrainings = data.map(training => {
-          const date = new Date(training.date[0], training.date[1] - 1, training.date[2]);
-          const start = `${training.startTime[0].toString().padStart(2, '0')}:${training.startTime[1].toString().padStart(2, '0')}`;
-          const end = `${training.endTime[0].toString().padStart(2, '0')}:${training.endTime[1].toString().padStart(2, '0')}`;
-          const dayIndex = date.getDay();
-          
-          let day = '';
-          switch (dayIndex) {
-            case 0:
-              day = 'Neděle';
-              break;
-            case 1:
-              day = 'Pondělí';
-              break;
-            case 2:
-              day = 'Úterý';
-              break;
-            case 3:
-              day = 'Středa';
-              break;
-            case 4:
-              day = 'Čtvrtek';
-              break;
-            case 5:
-              day = 'Pátek';
-              break;
-            case 6:
-              day = 'Sobota';
-              break;
-            default:
-              day = '';
-          }
+        const upcomingData = await ApiService.getTrainerUpcomingTrainings(email);
+        const pastData = await ApiService.getTrainerPastTrainings(email);
 
-          return {
-            id: training.id,
-            location: training.schoolName,
-            title: training.name,
-            date: `${date}`,
-            dayOfTheWeek: `${day}`,
-            time: `${start} - ${end}`,
-            attendees: training.numberOfChildren
-          };
-        });
-
-        setTrainings(mappedTrainings);
+        setUpcomingTrainings(upcomingData.map(mapTrainingData));
+        setPastTrainings(pastData.map(mapTrainingData));
       } catch (err) {
         console.error("Failed to fetch trainings", err);
       }
     };
+
     fetchTrainings();
   }, [email]);
 
@@ -74,9 +57,9 @@ const Dashboard = () => {
         <Header variant="dashboard" />
 
         <main className="flex-grow p-8 bg-gray-50 space-y-8">
-          <UpcomingTrainingsCard trainings={trainings}/>
-          <PastTrainingsCard />
-        </main>
+          <UpcomingTrainingsCard trainings={upcomingTrainings} />
+          <PastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
+          </main>
       </div>
     </div>
   );

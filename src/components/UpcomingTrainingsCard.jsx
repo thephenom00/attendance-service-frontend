@@ -1,49 +1,7 @@
 import React from "react";
 import { Calendar, Clock, Users, School, PersonStanding } from "lucide-react";
 
-const dummyTrainings = [
-  {
-    id: 0,
-    location: "ZŠ Demo",
-    title: "Demo Trénink",
-    date: new Date(),
-    dayOfTheWeek: "Pondělí",
-    time: "17:00 - 18:00",
-    attendees: 0,
-  },
-  {
-    id: 0,
-    location: "ZŠ Demo II",
-    title: "Demo Trénink II",
-    date: new Date(),
-    dayOfTheWeek: "Středa",
-    time: "17:00 - 18:00",
-    attendees: 0,
-  },
-  {
-    id: 0,
-    location: "ZŠ Demo II",
-    title: "Demo Trénink II",
-    date: new Date(),
-    dayOfTheWeek: "Středa",
-    time: "17:00 - 18:00",
-    attendees: 0,
-  },
-  {
-    id: 0,
-    location: "ZŠ Demo II",
-    title: "Demo Trénink II",
-    date: new Date(),
-    dayOfTheWeek: "Středa",
-    time: "17:00 - 18:00",
-    attendees: 0,
-  },
-];
-
-const UpcomingTrainings = ({ trainings }) => {
-  const displayedTrainings = trainings && trainings.length > 0 ? trainings : dummyTrainings;
-
-  
+const UpcomingTrainings = ({ trainings }) => {  
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">
@@ -53,10 +11,10 @@ const UpcomingTrainings = ({ trainings }) => {
       </div>
       <div
         className={`grid gap-4 ${
-          displayedTrainings.length === 1 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"
+          trainings.length === 1 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"
         }`}
       >
-        {displayedTrainings.map((training) => (
+        {trainings.map((training) => (
           <div
             key={training.id}
             className="border border-slate-100 rounded-lg p-4 hover:border-dojo-blue/20 transition-all duration-200 cursor-pointer bg-white hover:bg-blue-50/30"

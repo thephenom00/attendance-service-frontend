@@ -25,7 +25,7 @@ const AuthPages = ({ currentPage, setUser }) => {
   };
 
   {/* KARECEK */}
-  const [loginForm, setLoginForm] = useState({ email: "marecek@parecek.com", password: "123456" });
+  const [loginForm, setLoginForm] = useState({ email: "kosei@inoue.com", password: "kosei@inoue.com" });
   const [registerForm, setRegisterForm] = useState({
     firstName: "",
     lastName: "",

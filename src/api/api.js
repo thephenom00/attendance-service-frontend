@@ -94,7 +94,7 @@ export const ApiService = {
     }
   },
 
-  /* LOGIN REQUEST */
+  /* REGISTER REQUEST */
   register: async (firstName, lastName, phoneNumber, email, password) => {
     try {
         const response = await fetchWithConfig("/auth/register/parent", {
@@ -129,6 +129,41 @@ export const ApiService = {
     } catch (error) {
       throw new Error("REGISTRATION_FAILED");
     }
-  }
+  },
+
+    /* FETCH ALL PAST TRAININGS OF A TRAINER */
+    getTrainerPastTrainings: async(email) => {
+      try {
+        const response = await fetchWithConfig(`/trainer/${email}/trainingUnit/past`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" }
+        });
+        if (response) {
+          console.log(response)
+        }
+        return response;
+      } catch (error) {
+        throw new Error("REGISTRATION_FAILED");
+      }
+    },
+
+    /* UPDATES A DESCRIPTION OF PAST TRAINING UNIT */
+    updateTrainingUnitDescription: async(id, description) => {
+      try {
+        const response = await fetchWithConfig(`/trainingUnit/${id}/description`, {
+          method: "PATCH",
+          headers: {
+            'Content-Type': 'text/plain', 
+          },
+          body: description
+        });
+        if (response) {
+          console.log(response)
+        }
+        return response;
+      } catch (error) {
+        throw new Error("REGISTRATION_FAILED");
+      }
+    }
 
 };
