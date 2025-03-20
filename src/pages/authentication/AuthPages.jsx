@@ -24,8 +24,13 @@ const AuthPages = ({ currentPage, setUser }) => {
     setNotification({ ...notification, open: false });
   };
 
-  {/* KARECEK */}
-  const [loginForm, setLoginForm] = useState({ email: "kosei@inoue.com", password: "kosei@inoue.com" });
+  {
+    /* KARECEK */
+  }
+  const [loginForm, setLoginForm] = useState({
+    email: "kosei@inoue.com",
+    password: "kosei@inoue.com",
+  });
   const [registerForm, setRegisterForm] = useState({
     firstName: "",
     lastName: "",
@@ -40,10 +45,15 @@ const AuthPages = ({ currentPage, setUser }) => {
     setLoading(true);
     const userEmail = isLogin ? loginForm.email : registerForm.email;
 
-    {/* KARECEK */}
-    if (loginForm.email === "marecek@parecek.com" || loginForm.password === "123456") {
-      navigate("/dashboard")
-      return
+    {
+      /* KARECEK */
+    }
+    if (
+      loginForm.email === "marecek@parecek.com" ||
+      loginForm.password === "123456"
+    ) {
+      navigate("/dashboard");
+      return;
     }
 
     if (isLogin) {
@@ -53,9 +63,9 @@ const AuthPages = ({ currentPage, setUser }) => {
           loginForm.password
         );
         if (data) {
-          localStorage.setItem('firstName', JSON.stringify(data.firstName));
-          localStorage.setItem('lastName', JSON.stringify(data.lastName));
-          localStorage.setItem('email', userEmail);
+          localStorage.setItem("firstName", JSON.stringify(data.firstName));
+          localStorage.setItem("lastName", JSON.stringify(data.lastName));
+          localStorage.setItem("email", userEmail);
           navigate("/dashboard");
         }
       } catch (error) {
@@ -69,6 +79,15 @@ const AuthPages = ({ currentPage, setUser }) => {
         setLoading(false);
       }
     } else {
+      if (!(registerForm.password === registerForm.confirmPassword)) {
+        setNotification({
+          open: true,
+          message: "Hesla se neshodují.",
+          severity: "error",
+        });
+        setLoading(false);
+        return;
+      }
       try {
         const data = await ApiService.register(
           registerForm.firstName,
@@ -78,8 +97,8 @@ const AuthPages = ({ currentPage, setUser }) => {
           registerForm.password
         );
         if (data) {
-          localStorage.setItem('firstName', JSON.stringify(data.firstName));
-          localStorage.setItem('lastName', JSON.stringify(data.lastName));
+          localStorage.setItem("firstName", JSON.stringify(data.firstName));
+          localStorage.setItem("lastName", JSON.stringify(data.lastName));
           navigate("/dashboard");
         }
       } catch (error) {

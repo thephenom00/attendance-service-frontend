@@ -82,7 +82,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                   </div>
 
                   <div className="flex flex-col">
-                    <div className="flex items-center ">
+                    <div className="flex overflow-scroll">
                       <Pen className="w-[16px] h-[16px] mr-2 text-gray-600" />
                       {editingId === training.id ? (
                         <textarea
@@ -92,9 +92,9 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                           onChange={(e) => setTempDescription(e.target.value)}
                         />
                       ) : (
-                        <span className="text-[14px] max-h-[100px] overflow-hidden overflow-ellipsis block">
-                          {training.description}
-                        </span>
+                        <div className="text-[14px] h-[100px] whitespace-pre-wrap pr-1">
+                        {training.description}
+                      </div>                      
                       )}
                     </div>
                   </div>
