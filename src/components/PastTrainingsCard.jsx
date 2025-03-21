@@ -18,7 +18,6 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
         tempDescription
       );
 
-      // Update state:
       setTrainings((prev) =>
         prev.map((training) =>
           training.id === id
@@ -51,7 +50,25 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
         }`}
       >
         {[...trainings]
-          .sort((a, b) => new Date(a.date) - new Date(b.date))
+          .sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            if (dateA - dateB !== 0) {
+              return dateA - dateB;
+            }
+            const [startHourA, startMinuteA] = a.time
+              .split(" - ")[0]
+              .split(":")
+              .map(Number);
+            const [startHourB, startMinuteB] = b.time
+              .split(" - ")[0]
+              .split(":")
+              .map(Number);
+            if (startHourA !== startHourB) {
+              return startHourA - startHourB;
+            }
+            return startMinuteA - startMinuteB;
+          })
           .map((training) => (
             <div
               key={training.id}
@@ -93,8 +110,8 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                         />
                       ) : (
                         <div className="text-[14px] h-[100px] whitespace-pre-wrap pr-1">
-                        {training.description}
-                      </div>                      
+                          {training.description}
+                        </div>
                       )}
                     </div>
                   </div>
@@ -105,13 +122,13 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                 {editingId === training.id ? (
                   <>
                     <button
-                      className="text-sm px-2 py-1 text-white bg-green-500 rounded hover:bg-green-600"
+                      className="text-sm px-2 py-1 text-white bg-emerald-500 rounded hover:bg-emerald-600"
                       onClick={() => handleSave(training.id)}
                     >
                       Save
                     </button>
                     <button
-                      className="text-sm px-2 py-1 text-white bg-red-500 rounded hover:bg-red-600"
+                      className="text-sm px-2 py-1 text-white bg-rose-500 rounded hover:bg-rose-600"
                       onClick={handleCancel}
                     >
                       Cancel

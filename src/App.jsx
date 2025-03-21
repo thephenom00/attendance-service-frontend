@@ -3,8 +3,8 @@ import "./App.css";
 import LandingPage from "./pages/LandingPage.jsx";
 import AuthPages from "./pages/authentication/AuthPages.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard.jsx";
+import Attendance from "./pages/Attendance.jsx";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,18 +13,10 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/login"
-          element={<AuthPages currentPage="login" setUser={setUser} />}
-        />
-        <Route
-          path="/register"
-          element={<AuthPages currentPage="register" setUser={setUser} />}
-        />
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-          />
+        <Route path="/login" element={<AuthPages currentPage="login" setUser={setUser} />}/>
+        <Route path="/register" element={<AuthPages currentPage="register" setUser={setUser} />}/>
+        <Route path="/dashboard" element={<Dashboard />}/>
+        <Route path="/attendance/:id" element={<Attendance />}/>
       </Routes>
     </Router>
   );

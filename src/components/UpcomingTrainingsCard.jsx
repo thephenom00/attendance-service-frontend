@@ -1,7 +1,10 @@
 import React from "react";
 import { Calendar, Clock, Users, School, PersonStanding } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UpcomingTrainings = ({ trainings }) => {  
+  const navigate = useNavigate();
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex justify-between items-center mb-4">
@@ -18,7 +21,8 @@ const UpcomingTrainings = ({ trainings }) => {
           <div
             key={training.id}
             className="border border-slate-100 rounded-lg p-4 hover:border-dojo-blue/20 transition-all duration-200 cursor-pointer bg-white hover:bg-blue-50/30"
-          >
+            onClick={() => navigate(`/attendance/${training.id}`, { state: { training } })}
+            >
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center justify-center">
                 <School className="w-7 h-7 mr-2 text-judo-blue" />
