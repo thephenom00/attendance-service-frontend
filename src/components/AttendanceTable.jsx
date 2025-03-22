@@ -11,29 +11,177 @@ import {
   Chip,
 } from "@mui/material";
 import { Check, Close } from "@mui/icons-material";
+import { ApiService } from "../api/api.js";
 
-const AttendanceTable = () => {
-  const [attendees, setAttendees] = useState([
-    { id: 1, firstName: "Jan Novák", present: true },
-    {
-      id: 2,
-      firstName: "Petra Svobodová",
-      present: false,
-    },
-    { id: 3, firstName: "Tomáš Dvořák", present: true },
-    { id: 4, firstName: "Lucie Horáková", present: false },
-    { id: 5, firstName: "David Procházka", present: true },
-    { id: 6, firstName: "Eva Krejčí", present: true },
-  ]);
+const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
+  const [trainers, setTrainers] = useState(trainerAttendances);
+  const [children, setChildren] = useState(childAttendances);
 
-  const togglePresence = (id) => {
-    setAttendees((prev) =>
-      prev.map((a) => (a.id === id ? { ...a, present: !a.present } : a))
-    );
+  const handleTrainerPresence = async (trainerAttendanceId, present) => {
+    try {
+      if (present) {
+        await ApiService.markTrainerAttendancePresent(trainerAttendanceId);
+      } else {
+        await ApiService.markTrainerAttendanceAbsent(trainerAttendanceId);
+      }
+
+      setTrainers((prev) =>
+        prev.map((trainer) =>
+          trainer.id === trainerAttendanceId
+            ? { ...trainer, present }
+            : trainer
+        )
+      );
+    } catch (err) {
+      console.error("Failed to update trainer attendance", err);
+    }
+  };
+
+  const handleChildPresence = async (childAttendanceId, present) => {
+    try {
+      if (present) {
+        await ApiService.markChildAttendancePresent(childAttendanceId);
+      } else {
+        await ApiService.markChildAttendanceAbsent(childAttendanceId);
+      }
+      setChildren((prev) =>
+        prev.map((child) =>
+          child.id === childAttendanceId
+            ? { ...child, present }
+            : child
+        )
+      );
+    } catch (err) {
+      console.error("Failed to update child attendance", err);
+    }
   };
 
   return (
-    <div className="w-[350px] sm:w-[1000px]">
+    <div className="w-[350px] sm:w-[700px]">
+      {/* TRAINER TABLE */}
+      <TableContainer
+        component={Paper}
+        sx={{ borderRadius: "12px", overflow: "hidden", mb: "50px"}}
+      >
+        <Table size="small">
+          <TableHead sx={{ backgroundColor: "#f9fafb" }}>
+            <TableRow>
+              <TableCell
+                sx={{
+                  padding: "14px",
+                  fontSize: "18px",
+                  color: "#374151",
+                  fontWeight: "bold",
+                  width: "280px"
+                }}
+              >
+                Jméno
+              </TableCell>
+              <TableCell
+                sx={{
+                  padding: "14px",
+                  fontSize: "18px",
+                  color: "#374151",
+                  fontWeight: "bold",
+                }}
+              >
+                Prezence
+              </TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {trainers.map((trainer) => (
+              <TableRow key={trainer.id}>
+                {/* NAME */}
+                <TableCell
+                  sx={{
+                    padding: "14px",
+                    fontSize: "17px",
+                    whiteSpace: "normal",
+                    wordBreak: "break-word"
+                  }}
+                >
+                  <span
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {/* CHILD INFO */}}
+                  >
+                    {trainer.firstName} {trainer.lastName}
+                  </span>{" "}
+                </TableCell>
+                {/* ATTENDANCE */}
+                <TableCell sx={{ padding: "14px", fontSize: "17px" }}>
+                  <Chip
+                    label={trainer.present ? "Přítomen" : "Nepřítomen"}
+                    size="small"
+                    sx={{
+                      backgroundColor: trainer.present ? "#d1fae5" : "#fee2e2",
+                      color: trainer.present ? "#15803d" : "#b91c1c",
+                      borderRadius: "8px",
+                      fontWeight: 500,
+                    }}
+                  />
+                </TableCell>
+                {/* BUTTON */}
+                <TableCell
+                  sx={{ padding: "20px", whiteSpace: "nowrap" }}
+                  align="right"
+                >
+                  <IconButton
+                    size="small"
+                    sx={{
+                      backgroundColor: trainer.present
+                        ? "#4caf50"
+                        : "transparent",
+                      borderRadius: "8px",
+                      border: trainer.present ? "none" : "1px solid #d1d5db",
+                      color: trainer.present ? "white" : "black",
+                      "&:hover": {
+                        backgroundColor: trainer.present
+                          ? "#43a047"
+                          : "#f3f4f6",
+                      },
+                      marginRight: "15px",
+                    }}
+                    onClick={() => {
+                      if (!trainer.present) {
+                        handleTrainerPresence(trainer.id, true);
+                      }
+                    }}                  >
+                    <Check fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    sx={{
+                      backgroundColor: !trainer.present
+                        ? "#f44336"
+                        : "transparent",
+                      borderRadius: "8px",
+                      border: !trainer.present ? "none" : "1px solid #d1d5db",
+                      color: !trainer.present ? "white" : "black",
+                      "&:hover": {
+                        backgroundColor: !trainer.present
+                          ? "#e53935"
+                          : "#f3f4f6",
+                      },
+                    }}
+                    onClick={() => {
+                      if (trainer.present) {
+                        handleTrainerPresence(trainer.id, false);
+                      }
+                    }}                  >
+                    <Close fontSize="small" />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+                                    {/* CHILD TABLE */}
       <TableContainer
         component={Paper}
         sx={{ borderRadius: "12px", overflow: "hidden" }}
@@ -41,17 +189,32 @@ const AttendanceTable = () => {
         <Table size="small">
           <TableHead sx={{ backgroundColor: "#f9fafb" }}>
             <TableRow>
-              <TableCell sx={{ padding: "14px", fontSize: "18px", color: "#374151", fontWeight: "bold"  }}>
+              <TableCell
+                sx={{
+                  padding: "14px",
+                  fontSize: "18px",
+                  color: "#374151",
+                  fontWeight: "bold",
+                  width: "280px"
+                }}
+              >
                 Jméno
               </TableCell>
-              <TableCell sx={{ padding: "14px", fontSize: "18px", color: "#374151", fontWeight: "bold"  }}>
+              <TableCell
+                sx={{
+                  padding: "14px",
+                  fontSize: "18px",
+                  color: "#374151",
+                  fontWeight: "bold",
+                }}
+              >
                 Prezence
               </TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {attendees.map((attendee) => (
+            {children.map((attendee) => (
               <TableRow key={attendee.id}>
                 {/* NAME */}
                 <TableCell
@@ -62,7 +225,14 @@ const AttendanceTable = () => {
                     wordBreak: "break-word",
                   }}
                 >
-                  {attendee.firstName}
+                  <span
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {/* CHILD INFO */}}
+                  >
+                    {attendee.firstName} {attendee.lastName} 
+                  </span>{" "}
                 </TableCell>
                 {/* ATTENDANCE */}
                 <TableCell sx={{ padding: "14px", fontSize: "17px" }}>
@@ -98,8 +268,11 @@ const AttendanceTable = () => {
                       },
                       marginRight: "15px",
                     }}
-                    onClick={() => togglePresence(attendee.id)}
-                  >
+                    onClick={() => {
+                      if (!attendee.present) {
+                        handleChildPresence(attendee.id, true);
+                      }
+                    }}                  >
                     <Check fontSize="small" />
                   </IconButton>
                   <IconButton
@@ -117,7 +290,11 @@ const AttendanceTable = () => {
                           : "#f3f4f6",
                       },
                     }}
-                    onClick={() => togglePresence(attendee.id)}
+                    onClick={() => {
+                      if (attendee.present) {
+                        handleChildPresence(attendee.id, false);
+                      }
+                    }}    
                   >
                     <Close fontSize="small" />
                   </IconButton>
@@ -128,6 +305,9 @@ const AttendanceTable = () => {
         </Table>
       </TableContainer>
     </div>
+
+
+
   );
 };
 

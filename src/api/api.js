@@ -7,18 +7,18 @@ const handleLogout = () => {
 };
 
 const refreshTokenApi = async (refreshToken) => {
-    try {
-      const response = await fetchWithConfig(`/auth/refresh`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
-      });
-      return response;
-    } catch (error) {
-      console.error("Failed to refresh token:", error);
-      return null;
-    }
-  };
+  try {
+    const response = await fetchWithConfig(`/auth/refresh`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
+    });
+    return response;
+  } catch (error) {
+    console.error("Failed to refresh token:", error);
+    return null;
+  }
+};
 
 const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
   const url = `${API_CONFIG.BASE_URL}${endpoint}`;
@@ -46,7 +46,7 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
             localStorage.setItem("refresh_token", authResponse.refreshToken);
             localStorage.setItem("email", email);
             localStorage.setItem("role", authResponse.role);
-            console.log(authResponse)
+            console.log(authResponse);
             return fetchWithConfig(endpoint, options, noBody);
           } else {
             handleLogout();
@@ -60,7 +60,7 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
         throw new Error(`Request failed with status: ${response.status}`);
       }
     } else {
-        return noBody ? undefined : await response.json();
+      return noBody ? undefined : await response.json();
     }
   } catch (error) {
     console.error("API call failed:", error);
@@ -69,7 +69,7 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
 };
 
 export const ApiService = {
-  /* LOGIN REQUEST */
+  /* I LOGIN REQUEST */
   login: async (email, password) => {
     try {
       const response = await fetchWithConfig("/auth/login", {
@@ -82,7 +82,7 @@ export const ApiService = {
         localStorage.setItem("refresh_token", response.refreshToken);
         localStorage.setItem("email", email);
         localStorage.setItem("role", response.role);
-        console.log(response)
+        console.log(response);
       }
       return response;
     } catch (error) {
@@ -94,36 +94,26 @@ export const ApiService = {
     }
   },
 
-  /* REGISTER REQUEST */
+  /* II REGISTER REQUEST */
   register: async (firstName, lastName, phoneNumber, email, password) => {
     try {
-        const response = await fetchWithConfig("/auth/register/parent", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({firstName, lastName, email, phoneNumber, password}),
-        });
-        if (response) {
-          localStorage.setItem("access_token", response.accessToken);
-          localStorage.setItem("refresh_token", response.refreshToken);
-          localStorage.setItem("email", email);
-          localStorage.setItem("role", response.role)
-          console.log(response)
-        }
-        return response;
-      } catch (error) {
-        throw new Error("REGISTRATION_FAILED");
-      }
-  },
-
-  /* FETCH ALL UPCOMING TRAININGS OF A TRAINER */
-  getTrainerUpcomingTrainings: async(email) => {
-    try {
-      const response = await fetchWithConfig(`/trainer/${email}/trainingUnit/upcoming`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" }
+      const response = await fetchWithConfig("/auth/register/parent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          password,
+        }),
       });
       if (response) {
-        console.log(response)
+        localStorage.setItem("access_token", response.accessToken);
+        localStorage.setItem("refresh_token", response.refreshToken);
+        localStorage.setItem("email", email);
+        localStorage.setItem("role", response.role);
+        console.log(response);
       }
       return response;
     } catch (error) {
@@ -131,55 +121,193 @@ export const ApiService = {
     }
   },
 
-    /* FETCH ALL PAST TRAININGS OF A TRAINER */
-    getTrainerPastTrainings: async(email) => {
-      try {
-        const response = await fetchWithConfig(`/trainer/${email}/trainingUnit/past`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" }
-        });
-        if (response) {
-          console.log(response)
-        }
-        return response;
-      } catch (error) {
-        throw new Error("REGISTRATION_FAILED");
-      }
-    },
-
-    /* UPDATES A DESCRIPTION OF PAST TRAINING UNIT */
-    updateTrainingUnitDescription: async(id, description) => {
-      try {
-        const response = await fetchWithConfig(`/trainingUnit/${id}/description`, {
-          method: "PATCH",
-          headers: {
-            'Content-Type': 'text/plain', 
-          },
-          body: description
-        });
-        if (response) {
-          console.log(response)
-        }
-        return response;
-      } catch (error) {
-        throw new Error("REGISTRATION_FAILED");
-      }
-    },
-
-    /* GETS THE TRAINING UNIT BY ID */
-    getTrainingUnitById : async(id) => {
-      try {
-        const response = await fetchWithConfig(`/trainingUnit/${id}`, {
+  /* III FETCH ALL UPCOMING TRAININGS OF A TRAINER */
+  getTrainerUpcomingTrainings: async (email) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainer/${email}/trainingUnit/upcoming`,
+        {
           method: "GET",
           headers: { "Content-Type": "application/json" },
-        });
-        if (response) {
-          console.log(response)
         }
-        return response;
-      } catch (error) {
-        throw new Error("REGISTRATION_FAILED");
+      );
+      if (response) {
+        console.log(response);
       }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
     }
+  },
 
+  /* IV FETCH ALL PAST TRAININGS OF A TRAINER */
+  getTrainerPastTrainings: async (email) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainer/${email}/trainingUnit/past`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
+  },
+
+  /* V UPDATES A DESCRIPTION OF PAST TRAINING UNIT */
+  updateTrainingUnitDescription: async (id, description) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainingUnit/${id}/description`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          body: description,
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
+  },
+
+  /* VI GETS THE TRAINING UNIT BY ID */
+  getTrainingUnitById: async (id) => {
+    try {
+      const response = await fetchWithConfig(`/trainingUnit/${id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
+  },
+
+  /* VII GETS ALL TRAINER ATTENDANCES OF TRAINING UNIT BY ID */
+  getTrainerAttendancesByTrainingUnitId: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainingUnit/${id}/trainerAttendance`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
+  },
+
+  /* VIII GETS ALL CHILD ATTENDANCES OF TRAINING UNIT BY ID */
+  getChildAttendancesByTrainingUnitId: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainingUnit/${id}/childAttendance`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("REGISTRATION_FAILED");
+    }
+  },
+
+  /* IX MARKS A CHILD AS PRESENT BY ATTENDANCE ID */
+  markChildAttendancePresent: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/childAttendance/${id}/markPresent`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("MARK_CHILD_PRESENT_FAILED");
+    }
+  },
+
+  /* X MARKS A CHILD AS ABSENT BY ATTENDANCE ID */
+  markChildAttendanceAbsent: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/childAttendance/${id}/markAbsent`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("MARK_CHILD_ABSENT_FAILED");
+    }
+  },
+
+  /* XI MARKS A TRAINER AS ABSENT BY ATTENDANCE ID */
+  markTrainerAttendanceAbsent: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainerAttendance/${id}/markAbsent`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("MARK_TRAINER_ABSENT_FAILED");
+    }
+  },
+
+  /* XII MARKS A TRAINER AS PRESENT BY ATTENDANCE ID */
+  markTrainerAttendancePresent: async (id) => {
+    try {
+      const response = await fetchWithConfig(
+        `/trainerAttendance/${id}/markPresent`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("MARK_TRAINER_PRESENT_FAILED");
+    }
+  },
 };

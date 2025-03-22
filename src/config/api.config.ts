@@ -1,5 +1,6 @@
 const API_CONFIG = {
-    BASE_URL: 'http://localhost:8080',
+    // BASE_URL: 'http://localhost:8080',
+    BASE_URL: 'https://dojolog.up.railway.app',
 
     ENDPOINTS: {
         HEALTH: '/health',
