@@ -14,7 +14,7 @@ import { Check, Close } from "@mui/icons-material";
 
 const AttendanceTable = () => {
   const [attendees, setAttendees] = useState([
-    { id: 1, firstName: "Jan Novákkkkkkkkkkkkkkkkkkkk", present: true },
+    { id: 1, firstName: "Jan Novák", present: true },
     {
       id: 2,
       firstName: "Petra Svobodová",
@@ -34,16 +34,17 @@ const AttendanceTable = () => {
 
   return (
     <div className="w-[350px] sm:w-[1000px]">
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        sx={{ borderRadius: "12px", overflow: "hidden" }}
+      >
         <Table size="small">
-          {" "}
-          {/* Compact row height */}
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#f9fafb" }}>
             <TableRow>
-              <TableCell sx={{ padding: "14px", fontSize: "18px" }}>
+              <TableCell sx={{ padding: "14px", fontSize: "18px", color: "#374151", fontWeight: "bold"  }}>
                 Jméno
               </TableCell>
-              <TableCell sx={{ padding: "14px", fontSize: "18px" }}>
+              <TableCell sx={{ padding: "14px", fontSize: "18px", color: "#374151", fontWeight: "bold"  }}>
                 Prezence
               </TableCell>
               <TableCell></TableCell>
@@ -64,15 +65,13 @@ const AttendanceTable = () => {
                   {attendee.firstName}
                 </TableCell>
                 {/* ATTENDANCE */}
-                <TableCell
-                  sx={{ padding: "14px", fontSize: "17px"}}
-                >
+                <TableCell sx={{ padding: "14px", fontSize: "17px" }}>
                   <Chip
                     label={attendee.present ? "Přítomen" : "Nepřítomen"}
                     size="small"
                     sx={{
-                      backgroundColor: attendee.present ? "#4caf50" : "#f44336",
-                      color: "#fff",
+                      backgroundColor: attendee.present ? "#d1fae5" : "#fee2e2",
+                      color: attendee.present ? "#15803d" : "#b91c1c",
                       borderRadius: "8px",
                       fontWeight: 500,
                     }}
