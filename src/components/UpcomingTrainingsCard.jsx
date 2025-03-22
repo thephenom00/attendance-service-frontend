@@ -17,11 +17,31 @@ const UpcomingTrainings = ({ trainings }) => {
           trainings.length === 1 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"
         }`}
       >
-        {trainings.map((training) => (
+        {[...trainings]
+          .sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            if (dateA - dateB !== 0) {
+              return dateA - dateB;
+            }
+            const [startHourA, startMinuteA] = a.time
+              .split(" - ")[0]
+              .split(":")
+              .map(Number);
+            const [startHourB, startMinuteB] = b.time
+              .split(" - ")[0]
+              .split(":")
+              .map(Number);
+            if (startHourA !== startHourB) {
+              return startHourA - startHourB;
+            }
+            return startMinuteA - startMinuteB;
+          })
+          .map((training) => (
           <div
             key={training.id}
-            className="border border-slate-100 rounded-lg p-4 hover:border-dojo-blue/20 transition-all duration-200 cursor-pointer bg-white hover:bg-blue-50/30"
-            onClick={() => navigate(`/attendance/${training.id}`, { state: { training } })}
+            className="border border-slate-100 rounded-lg p-4 hover:border-judo-blue/20 transition-all duration-200 cursor-pointer bg-white hover:bg-blue-50/30"
+            onClick={() => navigate(`/attendance/${training.id}`)}
             >
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center justify-center">
@@ -31,7 +51,7 @@ const UpcomingTrainings = ({ trainings }) => {
                 </h3>
               </div>
 
-              <span className="text-sm px-2 py-1 bg-blue-50 text-dojo-blue rounded-full">
+              <span className="text-sm px-2 py-1 bg-blue-50 text-judo-blue rounded-full">
                 <Users size={14} className="inline mr-1" />
                 {training.attendees}
               </span>

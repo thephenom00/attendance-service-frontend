@@ -164,6 +164,22 @@ export const ApiService = {
       } catch (error) {
         throw new Error("REGISTRATION_FAILED");
       }
+    },
+
+    /* GETS THE TRAINING UNIT BY ID */
+    getTrainingUnitById : async(id) => {
+      try {
+        const response = await fetchWithConfig(`/trainingUnit/${id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response) {
+          console.log(response)
+        }
+        return response;
+      } catch (error) {
+        throw new Error("REGISTRATION_FAILED");
+      }
     }
 
 };

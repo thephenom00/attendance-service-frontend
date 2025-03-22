@@ -1,14 +1,30 @@
-import { useParams, useLocation, Link } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
-import AttendanceShoolCard from "../components/AttendanceSchoolCard.jsx";
+import AttendanceSchoolCard from "../components/AttendanceSchoolCard.jsx";
 import { ArrowLeft } from "lucide-react";
+import { ApiService } from "../api/api.js";
+import { mapTrainingData } from "../utils/trainingUtils.js";
+import AttendanceTable from "../components/AttendanceTable.jsx"
 
 const Attendance = () => {
   const { id } = useParams();
-  const location = useLocation();
-  const training = location.state?.training;
+  const [training, setTraining] = useState();
+
+useEffect(() => {
+  const fetchTrainings = async () => {
+    try {
+      const training = await ApiService.getTrainingUnitById(id);
+      setTraining(mapTrainingData(training));
+    } catch (err) {
+      console.error("Failed to fetch trainings", err);
+    }
+  };
+
+  fetchTrainings();
+}, [id]);
+
 
   return (
     <div className="flex min-h-screen">
@@ -25,12 +41,14 @@ const Attendance = () => {
             Zpět na dashboard
           </Link>
         </div>
-        <main className="flex-grow p-8 bg-gray-50 flex justify-center items-start">
-          {training ? (
-            <AttendanceShoolCard training={training} />
+        <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
+        {training ? (
+            <AttendanceSchoolCard training={training} setTraining={setTraining} />
           ) : (
             <p>No training data found.</p>
           )}
+
+          <AttendanceTable />
         </main>
       </div>
     </div>

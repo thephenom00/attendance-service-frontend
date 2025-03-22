@@ -99,8 +99,8 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                   </div>
 
                   <div className="flex flex-col">
-                    <div className="flex overflow-scroll">
-                      <Pen className="w-[16px] h-[16px] mr-2 text-gray-600" />
+                    <div className="flex overflow-auto">
+                      <Pen className="w-[16px] h-[16px] mr-2" />
                       {editingId === training.id ? (
                         <textarea
                           className="border border-gray-300 rounded m-2 text-[14px] w-full"
@@ -109,7 +109,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                           onChange={(e) => setTempDescription(e.target.value)}
                         />
                       ) : (
-                        <div className="text-[14px] h-[100px] whitespace-pre-wrap pr-1">
+                        <div className="text-[14px] h-[100px] whitespace-pre-wrap pr-1 break-all">
                           {training.description}
                         </div>
                       )}
@@ -122,16 +122,16 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                 {editingId === training.id ? (
                   <>
                     <button
-                      className="text-sm px-2 py-1 text-white bg-emerald-500 rounded hover:bg-emerald-600"
+                      className="text-sm px-2 py-2 text-white bg-emerald-500 rounded hover:bg-emerald-600"
                       onClick={() => handleSave(training.id)}
                     >
-                      Save
+                      Uložit
                     </button>
                     <button
-                      className="text-sm px-2 py-1 text-white bg-rose-500 rounded hover:bg-rose-600"
+                      className="text-sm px-2 py-2 text-white bg-rose-500 rounded hover:bg-rose-600"
                       onClick={handleCancel}
                     >
-                      Cancel
+                      Zrušit
                     </button>
                   </>
                 ) : (
@@ -141,7 +141,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                       handleEditClick(training.id, training.description)
                     }
                   >
-                    Edit
+                    Upravit
                   </button>
                 )}
               </div>
