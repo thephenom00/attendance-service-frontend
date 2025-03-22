@@ -14,7 +14,7 @@ import { Check, Close } from "@mui/icons-material";
 
 const AttendanceTable = () => {
   const [attendees, setAttendees] = useState([
-    { id: 1, firstName: "Jan Novák", present: true },
+    { id: 1, firstName: "Jan Novákkkkkkkkkkkkkkkkkkkk", present: true },
     {
       id: 2,
       firstName: "Petra Svobodová",
@@ -56,17 +56,16 @@ const AttendanceTable = () => {
                 <TableCell
                   sx={{
                     padding: "14px",
-                    fontSize: "14px",
+                    fontSize: "17px",
                     whiteSpace: "normal",
                     wordBreak: "break-word",
-                    // width: "full",
                   }}
                 >
                   {attendee.firstName}
                 </TableCell>
                 {/* ATTENDANCE */}
                 <TableCell
-                  sx={{ padding: "14px", fontSize: "14px"}}
+                  sx={{ padding: "14px", fontSize: "17px"}}
                 >
                   <Chip
                     label={attendee.present ? "Přítomen" : "Nepřítomen"}
