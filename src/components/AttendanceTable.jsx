@@ -34,22 +34,25 @@ const AttendanceTable = () => {
     <Table size="small"> {/* Compact row height */}
       <TableHead>
         <TableRow>
-          <TableCell sx={{ padding: "10px", fontSize: "18px" }}>Jméno</TableCell>
-          <TableCell sx={{ padding: "10px", fontSize: "18px" }}>Prezence</TableCell>
+          <TableCell sx={{ padding: "14px", fontSize: "18px" }}>Jméno</TableCell>
+          <TableCell sx={{ padding: "14px", fontSize: "18px" }}>Prezence</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {attendees.map((attendee) => (
           <TableRow key={attendee.id}>
-            <TableCell sx={{ padding: "10px" }}>{attendee.firstName}</TableCell>
-            <TableCell sx={{ padding: "10px" }}>
+            {/* NAME */}
+            <TableCell sx={{ padding: "14px", fontSize: "18px" }}>{attendee.firstName}</TableCell>
+            {/* ATTENDANCE */}
+            <TableCell sx={{ padding: "14px", fontSize: "18px" }}>
               <Chip
                 label={attendee.present ? "Přítomen" : "Nepřítomen"}
                 color={attendee.present ? "success" : "error"}
                 size="small"
               />
             </TableCell>
-            <TableCell sx={{ padding: "6px" }} align="right">
+            {/* BUTTON */}
+            <TableCell sx={{ padding: "0px" }} align="right">
               <IconButton
                 size="small"
                 color={attendee.present ? "success" : "default"}
