@@ -15,7 +15,11 @@ import { Check, Close } from "@mui/icons-material";
 const AttendanceTable = () => {
   const [attendees, setAttendees] = useState([
     { id: 1, firstName: "Jan Novák", present: true },
-    { id: 2, firstName: "Petra Svobodovádwdwddawawdadwawdadwadwadwwdwadwadw", present: false },
+    {
+      id: 2,
+      firstName: "Petra Svobodová",
+      present: false,
+    },
     { id: 3, firstName: "Tomáš Dvořák", present: true },
     { id: 4, firstName: "Lucie Horáková", present: false },
     { id: 5, firstName: "David Procházka", present: true },
@@ -55,33 +59,66 @@ const AttendanceTable = () => {
                     fontSize: "14px",
                     whiteSpace: "normal",
                     wordBreak: "break-word",
+                    // width: "full",
                   }}
                 >
                   {attendee.firstName}
                 </TableCell>
                 {/* ATTENDANCE */}
-                <TableCell sx={{ padding: "14px", fontSize: "14px" }}>
+                <TableCell
+                  sx={{ padding: "14px", fontSize: "14px"}}
+                >
                   <Chip
                     label={attendee.present ? "Přítomen" : "Nepřítomen"}
-                    color={attendee.present ? "success" : "error"}
                     size="small"
+                    sx={{
+                      backgroundColor: attendee.present ? "#4caf50" : "#f44336",
+                      color: "#fff",
+                      borderRadius: "8px",
+                      fontWeight: 500,
+                    }}
                   />
                 </TableCell>
                 {/* BUTTON */}
                 <TableCell
-                  sx={{ padding: "0px", whiteSpace: "nowrap" }}
+                  sx={{ padding: "20px", whiteSpace: "nowrap" }}
                   align="right"
                 >
                   <IconButton
                     size="small"
-                    color={attendee.present ? "success" : "default"}
+                    sx={{
+                      backgroundColor: attendee.present
+                        ? "#4caf50"
+                        : "transparent",
+                      borderRadius: "8px",
+                      border: attendee.present ? "none" : "1px solid #d1d5db",
+                      color: attendee.present ? "white" : "black",
+                      "&:hover": {
+                        backgroundColor: attendee.present
+                          ? "#43a047"
+                          : "#f3f4f6",
+                      },
+                      marginRight: "15px",
+                    }}
                     onClick={() => togglePresence(attendee.id)}
                   >
                     <Check fontSize="small" />
                   </IconButton>
                   <IconButton
                     size="small"
-                    color={!attendee.present ? "error" : "default"}
+                    sx={{
+                      backgroundColor: !attendee.present
+                        ? "#f44336"
+                        : "transparent",
+                      borderRadius: "8px",
+                      border: !attendee.present ? "none" : "1px solid #d1d5db",
+                      color: !attendee.present ? "white" : "black",
+                      "&:hover": {
+                        backgroundColor: !attendee.present
+                          ? "#e53935"
+                          : "#f3f4f6",
+                      },
+                    }}
                     onClick={() => togglePresence(attendee.id)}
                   >
                     <Close fontSize="small" />
