@@ -310,4 +310,23 @@ export const ApiService = {
       throw new Error("MARK_TRAINER_PRESENT_FAILED");
     }
   },
+
+    /* XIII GETS TRAINERS REPORT */
+    getTrainerReport: async (email) => {
+      try {
+        const response = await fetchWithConfig(
+          `/trainer/${email}/report`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        if (response) {
+          console.log(response);
+        }
+        return response;
+      } catch (error) {
+        throw new Error("GET_TRAINER_REPORT_FAILED");
+      }
+    },
 };

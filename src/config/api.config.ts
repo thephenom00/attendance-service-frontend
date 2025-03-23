@@ -3,7 +3,6 @@ const API_CONFIG = {
     BASE_URL: 'https://dojolog.up.railway.app',
 
     ENDPOINTS: {
-        HEALTH: '/health',
         AUTH: {
             LOGIN: '/auth/login',
             REGISTER: '/auth/register',

@@ -24,7 +24,6 @@ const Sidebar = () => {
 
   const trainerLinks = [
     { name: "Přehled", path: "/dashboard", icon: Home },
-    { name: "Tréninky", path: "/trainings", icon: FileText },
     { name: "Akce", path: "/events", icon: Calendar },
     { name: "Report", path: "/report", icon: BarChart },
   ];
@@ -36,7 +35,24 @@ const Sidebar = () => {
     { name: "Moje dítě", path: "/my-child", icon: ClipboardList },
   ];
 
-  const links = role === "parent" ? parentLinks : trainerLinks;
+  const adminLinks = [
+    { name: "Přehled", path: "/dashboard", icon: Home },
+  ];
+
+  function getLinks(role) {
+    switch(role) {
+      case "ROLE_TRAINER":
+        return trainerLinks;
+      case "ROLE_PARENT":
+        return parentLinks;
+      case "ROLE_ADMIN":
+        return adminLinks;
+      default:
+        return [];
+    }
+  }
+
+  const links = getLinks(role);
 
   return (
     <>
