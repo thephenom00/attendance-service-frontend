@@ -38,7 +38,7 @@ const Dashboard = () => {
         <main className="flex-grow p-8 bg-gray-50 space-y-8">
           <UpcomingTrainingsCard trainings={upcomingTrainings} />
           <PastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
-          </main>
+        </main>
       </div>
     </div>
   );

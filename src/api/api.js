@@ -273,26 +273,7 @@ export const ApiService = {
     }
   },
 
-  /* XI MARKS A TRAINER AS ABSENT BY ATTENDANCE ID */
-  markTrainerAttendanceAbsent: async (id) => {
-    try {
-      const response = await fetchWithConfig(
-        `/trainerAttendance/${id}/markAbsent`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      if (response) {
-        console.log(response);
-      }
-      return response;
-    } catch (error) {
-      throw new Error("MARK_TRAINER_ABSENT_FAILED");
-    }
-  },
-
-  /* XII MARKS A TRAINER AS PRESENT BY ATTENDANCE ID */
+  /* XI MARKS A TRAINER AS PRESENT BY ATTENDANCE ID */
   markTrainerAttendancePresent: async (id) => {
     try {
       const response = await fetchWithConfig(
@@ -311,13 +292,13 @@ export const ApiService = {
     }
   },
 
-    /* XIII GETS TRAINERS REPORT */
-    getTrainerReport: async (email) => {
+    /* XII MARKS A TRAINER AS ABSENT BY ATTENDANCE ID */
+    markTrainerAttendanceAbsent: async (id) => {
       try {
         const response = await fetchWithConfig(
-          `/trainer/${email}/report`,
+          `/trainerAttendance/${id}/markAbsent`,
           {
-            method: "GET",
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
           }
         );
@@ -326,7 +307,55 @@ export const ApiService = {
         }
         return response;
       } catch (error) {
-        throw new Error("GET_TRAINER_REPORT_FAILED");
+        throw new Error("MARK_TRAINER_ABSENT_FAILED");
       }
     },
+
+  /* XIII GETS TRAINERS REPORT */
+  getTrainerReport: async (email) => {
+    try {
+      const response = await fetchWithConfig(`/trainer/${email}/report`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_TRAINER_REPORT_FAILED");
+    }
+  },
+
+  /* XIV GETS EVENTS */
+  getEvents: async () => {
+    try {
+      const response = await fetchWithConfig(`/event`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_EVENTS_FAILED");
+    }
+  },
+
+  /* XV GETS REGISTERED CHILDREN FOR EVENT */
+  getEventRegisteredChildren: async (id) => {
+    try {
+      const response = await fetchWithConfig(`/event/${id}/getRegisteredChildren`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_REGISTERED_CHILDREN_FOR_EVENT");
+    }
+  },
 };

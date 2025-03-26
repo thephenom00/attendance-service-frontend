@@ -100,7 +100,7 @@ const Sidebar = () => {
                 key={link.name}
                 onClick={() => {
                   navigate(link.path);
-                  setIsOpen(false); // Auto close after clicking (on small screens)
+                  setIsOpen(false);
                 }}
                 className={`flex items-center p-3 rounded-lg transition-colors hover:cursor-pointer ${
                   isActive

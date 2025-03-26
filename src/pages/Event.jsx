@@ -2,34 +2,70 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
+import EventCard from "../components/EventCard.jsx";
 import { ArrowLeft } from "lucide-react";
-
-
-
+import { ApiService } from "../api/api.js";
 
 const Event = () => {
-    return (
-        <div className="flex min-h-screen">
-          <Sidebar />
-    
-          <div className="flex-grow flex flex-col">
-            <Header variant="dashboard" />
-            <div className="top-17 sm:top-25 px-5 absolute">
-              <Link
-                to="/dashboard"
-                className="flex items-center text-judo-blue hover:underline text-[15px]"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Zpět na dashboard
-              </Link>
-            </div>
-            <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-              {/* <ReportTable /> */}
-            </main>
-          </div>
-        </div>
-      );
+  const [events, setEvents] = useState([]);
 
-}
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const data = await ApiService.getEvents();
+        const formatted = data.map((event) => ({
+          ...event,
+          startDate: formatDate(event.startDate),
+          endDate: event.endDate ? formatDate(event.endDate) : null,
+          startTime: event.startTime ? formatTime(event.startTime) : null,
+          endTime: event.endTime ? formatTime(event.endTime) : null,
+          price: event.price.toLocaleString("cs-CZ")
+        }));
+        setEvents(formatted);
+      } catch (err) {
+        console.error("Failed to fetch events", err);
+      }
+    };
+    fetchEvent();
+  }, []);
+
+  const formatDate = (dateArray) => {
+    if (!Array.isArray(dateArray)) return "";
+    const [year, month, day] = dateArray;
+    return `${day.toString().padStart(2, "0")}.${month
+      .toString()
+      .padStart(2, "0")}.${year}`;
+  };
+
+  const formatTime = (time) => {      
+    if (Array.isArray(time)) return "";
+    const [hour, minute] = time;
+    return `${hour.toString().padStart(2, "0")}:${minute
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar />
+
+      <div className="flex-grow flex flex-col">
+        <Header variant="dashboard" />
+        <div className="top-17 sm:top-25 px-5 absolute">
+          <Link
+            to="/dashboard"
+            className="flex items-center text-judo-blue hover:underline text-[15px]"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Zpět na dashboard
+          </Link>
+        </div>
+        <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
+          <EventCard events={events} />
+        </main>
+      </div>
+    </div>
+  );
+};
 
 export default Event;

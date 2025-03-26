@@ -29,7 +29,7 @@ const Header = ({ variant = "default"}) => {
       } bg-white shadow-md `}
     >
       <div
-        onClick={() => navigate("/")}
+        onClick={() => variant === "dashboard" ? navigate("/dashboard") : navigate("/")}
         className="flex items-center space-x-2 hover:cursor-pointer"
       >
         <img

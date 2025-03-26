@@ -7,7 +7,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Attendance from "./pages/Attendance.jsx";
 import Report from "./pages/Report.jsx";
 import Event from "./pages/Event.jsx";
-import Table from "./pages/Table.jsx";
+import EventDetail from "./pages/EventDetail.jsx";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -22,7 +23,7 @@ function App() {
         <Route path="/attendance/:id" element={<Attendance />}/>
         <Route path="/report" element={<Report />}/>
         <Route path="/events" element={<Event />}/>
-        <Route path="/table" element={<Table />}/>
+        <Route path="/events/detail/:id" element={<EventDetail />}/>
       </Routes>
     </Router>
   );
