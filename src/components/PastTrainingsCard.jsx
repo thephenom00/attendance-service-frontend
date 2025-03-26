@@ -50,11 +50,12 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
         }`}
       >
         {[...trainings]
+          // SORT BACKWARDS
           .sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
-            if (dateA - dateB !== 0) {
-              return dateA - dateB;
+            if (dateB - dateA !== 0) {
+              return dateB - dateA;
             }
             const [startHourA, startMinuteA] = a.time
               .split(" - ")[0]
