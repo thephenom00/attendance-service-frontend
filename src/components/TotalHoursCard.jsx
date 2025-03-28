@@ -27,7 +27,7 @@ const TotalHoursCard = ({ totalHours }) => {
             {totalHours} hodin
           </Typography>
           <Typography variant="body2" sx={{ color: "#6b7280" }}>
-          Celkový počet odtrénovaných hodin
+          Celkový počet odtrénovaných hodin tento měsíc
           </Typography>
         </Box>
       </Box>

@@ -292,29 +292,29 @@ export const ApiService = {
     }
   },
 
-    /* XII MARKS A TRAINER AS ABSENT BY ATTENDANCE ID */
-    markTrainerAttendanceAbsent: async (id) => {
-      try {
-        const response = await fetchWithConfig(
-          `/trainerAttendance/${id}/markAbsent`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        if (response) {
-          console.log(response);
-        }
-        return response;
-      } catch (error) {
-        throw new Error("MARK_TRAINER_ABSENT_FAILED");
-      }
-    },
-
-  /* XIII GETS TRAINERS REPORT */
-  getTrainerReport: async (email) => {
+  /* XII MARKS A TRAINER AS ABSENT BY ATTENDANCE ID */
+  markTrainerAttendanceAbsent: async (id) => {
     try {
-      const response = await fetchWithConfig(`/trainer/${email}/report`, {
+      const response = await fetchWithConfig(
+        `/trainerAttendance/${id}/markAbsent`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("MARK_TRAINER_ABSENT_FAILED");
+    }
+  },
+
+  /* XIII GETS TRAINERS REPORT FOR CURRENT MONTH*/
+  getTrainerCurrentMonthReport: async (email) => {
+    try {
+      const response = await fetchWithConfig(`/trainer/${email}/report/currentMonth`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -346,7 +346,26 @@ export const ApiService = {
   /* XV GETS REGISTERED CHILDREN FOR EVENT */
   getEventRegisteredChildren: async (id) => {
     try {
-      const response = await fetchWithConfig(`/event/${id}/getRegisteredChildren`, {
+      const response = await fetchWithConfig(
+        `/event/${id}/getRegisteredChildren`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_REGISTERED_CHILDREN_FOR_EVENT");
+    }
+  },
+
+  /* XVI GET NEWS */
+  getNews: async () => {
+    try {
+      const response = await fetchWithConfig(`/news`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -355,7 +374,23 @@ export const ApiService = {
       }
       return response;
     } catch (error) {
-      throw new Error("GET_REGISTERED_CHILDREN_FOR_EVENT");
+      throw new Error("GET_NEWS");
+    }
+  },
+
+  /* XVII GET PARENT CONTACT */
+  getParentContact: async (id) => {
+    try {
+      const response = await fetchWithConfig(`/childAttendance/${id}/parentContact`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_PARENT_CONTACT");
     }
   },
 };

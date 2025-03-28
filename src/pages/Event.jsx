@@ -5,6 +5,7 @@ import Header from "../components/Header.jsx";
 import EventCard from "../components/EventCard.jsx";
 import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
+import { formatDate, formatTime } from "../utils/trainingUtils.js";
 
 const Event = () => {
   const [events, setEvents] = useState([]);
@@ -28,22 +29,6 @@ const Event = () => {
     };
     fetchEvent();
   }, []);
-
-  const formatDate = (dateArray) => {
-    if (!Array.isArray(dateArray)) return "";
-    const [year, month, day] = dateArray;
-    return `${day.toString().padStart(2, "0")}.${month
-      .toString()
-      .padStart(2, "0")}.${year}`;
-  };
-
-  const formatTime = (time) => {      
-    if (Array.isArray(time)) return "";
-    const [hour, minute] = time;
-    return `${hour.toString().padStart(2, "0")}:${minute
-      .toString()
-      .padStart(2, "0")}`;
-  };
 
   return (
     <div className="flex min-h-screen">

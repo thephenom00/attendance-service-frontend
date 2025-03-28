@@ -16,7 +16,7 @@ const Report = () => {
   useEffect(() => {
     const fetchReport = async () => {
       try {
-        const reports = await ApiService.getTrainerReport(email);
+        const reports = await ApiService.getTrainerCurrentMonthReport(email);
         setReport(reports);
       } catch (err) {
         console.error("Failed to fetch report", err);

@@ -36,3 +36,20 @@ export const mapTrainingData = (training) => {
     attendees: training.numberOfChildren,
   };
 };
+
+
+export const formatDate = (dateArray) => {
+  if (!Array.isArray(dateArray)) return "";
+  const [year, month, day] = dateArray;
+  return `${day.toString().padStart(2, "0")}.${month
+    .toString()
+    .padStart(2, "0")}.${year}`;
+};
+
+export const formatTime = (time) => {      
+  if (Array.isArray(time)) return "";
+  const [hour, minute] = time;
+  return `${hour.toString().padStart(2, "0")}:${minute
+    .toString()
+    .padStart(2, "0")}`;
+};

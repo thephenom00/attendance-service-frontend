@@ -9,13 +9,19 @@ import {
   Paper,
   IconButton,
   Chip,
+  Modal,
+  Box,
+  Typography,
+
 } from "@mui/material";
 import { Check, Close } from "@mui/icons-material";
+import { AtSign, Users, Phone } from "lucide-react";
 import { ApiService } from "../api/api.js";
 
 const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
   const [trainers, setTrainers] = useState(trainerAttendances);
   const [children, setChildren] = useState(childAttendances);
+  const [selectedParent, setSelectedParent] = useState(null);
 
   const handleTrainerPresence = async (trainerAttendanceId, present) => {
     try {
@@ -27,9 +33,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
 
       setTrainers((prev) =>
         prev.map((trainer) =>
-          trainer.id === trainerAttendanceId
-            ? { ...trainer, present }
-            : trainer
+          trainer.id === trainerAttendanceId ? { ...trainer, present } : trainer
         )
       );
     } catch (err) {
@@ -46,13 +50,20 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
       }
       setChildren((prev) =>
         prev.map((child) =>
-          child.id === childAttendanceId
-            ? { ...child, present }
-            : child
+          child.id === childAttendanceId ? { ...child, present } : child
         )
       );
     } catch (err) {
       console.error("Failed to update child attendance", err);
+    }
+  };
+
+  const handleParentContact = async (childAttendanceId) => {
+    try {
+      const parent = await ApiService.getParentContact(childAttendanceId);
+      setSelectedParent(parent)
+    } catch (err) {
+      console.error("Failed to fetch childs parents", err);
     }
   };
 
@@ -61,7 +72,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
       {/* TRAINER TABLE */}
       <TableContainer
         component={Paper}
-        sx={{ borderRadius: "12px", overflow: "hidden", mb: "50px"}}
+        sx={{ borderRadius: "12px", overflow: "hidden", mb: "50px" }}
       >
         <Table size="small">
           <TableHead sx={{ backgroundColor: "#f9fafb" }}>
@@ -72,7 +83,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                   fontSize: "18px",
                   color: "#374151",
                   fontWeight: "bold",
-                  width: "280px"
+                  width: "280px",
                 }}
               >
                 Jméno
@@ -99,15 +110,10 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                     padding: "14px",
                     fontSize: "17px",
                     whiteSpace: "normal",
-                    wordBreak: "break-word"
+                    wordBreak: "break-word",
                   }}
                 >
-                  <span
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {/* CHILD INFO */}}
-                  >
+                  <span>
                     {trainer.firstName} {trainer.lastName}
                   </span>{" "}
                 </TableCell>
@@ -149,7 +155,8 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                       if (!trainer.present) {
                         handleTrainerPresence(trainer.id, true);
                       }
-                    }}                  >
+                    }}
+                  >
                     <Check fontSize="small" />
                   </IconButton>
                   <IconButton
@@ -171,7 +178,8 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                       if (trainer.present) {
                         handleTrainerPresence(trainer.id, false);
                       }
-                    }}                  >
+                    }}
+                  >
                     <Close fontSize="small" />
                   </IconButton>
                 </TableCell>
@@ -181,7 +189,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
         </Table>
       </TableContainer>
 
-                                    {/* CHILD TABLE */}
+      {/* CHILD TABLE */}
       <TableContainer
         component={Paper}
         sx={{ borderRadius: "12px", overflow: "hidden" }}
@@ -195,7 +203,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                   fontSize: "18px",
                   color: "#374151",
                   fontWeight: "bold",
-                  width: "280px"
+                  width: "280px",
                 }}
               >
                 Jméno
@@ -229,9 +237,9 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                     style={{
                       cursor: "pointer",
                     }}
-                    onClick={() => {/* CHILD INFO */}}
+                    onClick={() => handleParentContact(attendee.id)}
                   >
-                    {attendee.firstName} {attendee.lastName} 
+                    {attendee.firstName} {attendee.lastName}
                   </span>{" "}
                 </TableCell>
                 {/* ATTENDANCE */}
@@ -272,7 +280,8 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                       if (!attendee.present) {
                         handleChildPresence(attendee.id, true);
                       }
-                    }}                  >
+                    }}
+                  >
                     <Check fontSize="small" />
                   </IconButton>
                   <IconButton
@@ -294,7 +303,7 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
                       if (attendee.present) {
                         handleChildPresence(attendee.id, false);
                       }
-                    }}    
+                    }}
                   >
                     <Close fontSize="small" />
                   </IconButton>
@@ -304,10 +313,62 @@ const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Modal open={!!selectedParent} onClose={() => setSelectedParent(null)}>
+        <Box
+          sx={{
+            backgroundColor: "white",
+            padding: "28px",
+            borderRadius: "18px",
+            width: "100%",
+            maxWidth: "420px",
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            boxShadow: 24,
+            outline: "none",
+          }}
+        >
+          <Typography
+            variant="h6"
+            mb={3}
+            sx={{
+              fontWeight: "bold",
+              fontSize: "22px",
+              textAlign: "center",
+              color: "#1e40af",
+            }}
+          >
+            Kontakt na rodiče
+          </Typography>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Users className="text-judo-blue" size={18} />
+              <Typography variant="body1">
+                <strong>Jméno:</strong> {selectedParent?.firstName}{" "}
+                {selectedParent?.lastName}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Phone className="text-judo-blue" size={18} />
+              <Typography variant="body1">
+                <strong>Telefon:</strong> {selectedParent?.phoneNumber}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <AtSign className="text-judo-blue" size={18} />
+              <Typography variant="body1">
+                <strong>Email:</strong> {selectedParent?.email}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
     </div>
-
-
-
   );
 };
 

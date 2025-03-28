@@ -8,6 +8,7 @@ import {
   LogOut,
   Menu,
   X,
+  Newspaper
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -24,6 +25,7 @@ const Sidebar = () => {
 
   const trainerLinks = [
     { name: "Přehled", path: "/dashboard", icon: Home },
+    { name: "Aktuality", path: "/news", icon: Newspaper },
     { name: "Akce", path: "/events", icon: Calendar },
     { name: "Report", path: "/report", icon: BarChart },
   ];
