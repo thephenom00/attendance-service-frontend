@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar.jsx";
 import Header from "../../components/Header.jsx";
 import { ApiService } from "../../api/api.js";
 import { mapTrainingData, getDayName } from "../../utils/trainingUtils.js";
-import TrainerDashboard from "./TrainerDashBoard.jsx";
+import TrainerDashboard from "./TrainerDashboard.jsx";
 import { useAuth } from '../../context/AuthContext.jsx';
 
 const Dashboard = () => {
