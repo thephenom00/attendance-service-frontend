@@ -1,5 +1,6 @@
 import API_CONFIG from "../config/api.config";
 
+
 const handleLogout = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
@@ -35,17 +36,16 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
   try {
     const response = await fetch(url, defaultOptions);
 
-    if (!response.status.toString().startsWith("2")) {
+    if (!response.status.toString().startsWith("2") && !response.status === "403") {
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (refreshToken && endpoint !== "/auth/refresh") {
         try {
+          console.log("REFRESH TOKEN")
           const authResponse = await refreshTokenApi(refreshToken);
           if (authResponse) {
             localStorage.setItem("access_token", authResponse.accessToken);
             localStorage.setItem("refresh_token", authResponse.refreshToken);
-            localStorage.setItem("email", email);
-            localStorage.setItem("role", authResponse.role);
             console.log(authResponse);
             return fetchWithConfig(endpoint, options, noBody);
           } else {
@@ -69,32 +69,6 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
 };
 
 export const ApiService = {
-  /* I LOGIN REQUEST */
-  login: async (email, password) => {
-    try {
-      const response = await fetchWithConfig("/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (response) {
-        localStorage.setItem("access_token", response.accessToken);
-        localStorage.setItem("refresh_token", response.refreshToken);
-        localStorage.setItem("email", email);
-        localStorage.setItem("role", response.role);
-        console.log(response);
-      }
-      return response;
-    } catch (error) {
-      if (error.message === "ACCOUNT_DELETED") {
-        throw new Error("ACCOUNT_DELETED");
-      }
-      console.error("Login failed:", error);
-      throw error;
-    }
-  },
-
-  /* II REGISTER REQUEST */
   register: async (firstName, lastName, phoneNumber, email, password) => {
     try {
       const response = await fetchWithConfig("/auth/register/parent", {
@@ -108,13 +82,6 @@ export const ApiService = {
           password,
         }),
       });
-      if (response) {
-        localStorage.setItem("access_token", response.accessToken);
-        localStorage.setItem("refresh_token", response.refreshToken);
-        localStorage.setItem("email", email);
-        localStorage.setItem("role", response.role);
-        console.log(response);
-      }
       return response;
     } catch (error) {
       throw new Error("REGISTRATION_FAILED");

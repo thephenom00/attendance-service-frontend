@@ -11,17 +11,14 @@ import {
   Newspaper
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [role, setRole] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    setRole(storedRole);
-  }, []);
+  const { user, logout } = useAuth();
 
   const trainerLinks = [
     { name: "Přehled", path: "/dashboard", icon: Home },
@@ -54,7 +51,7 @@ const Sidebar = () => {
     }
   }
 
-  const links = getLinks(role);
+  const links = getLinks(user.role);
 
   return (
     <>
@@ -119,7 +116,7 @@ const Sidebar = () => {
           <div className="mt-auto border-t border-gray-300 pt-4">
             <button
               onClick={() => {
-                localStorage.clear();
+                logout()
                 navigate("/");
                 setIsOpen(false);
               }}

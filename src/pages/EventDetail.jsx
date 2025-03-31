@@ -13,7 +13,7 @@ import {
   Banknote,
   Phone,
   AtSign,
-  Baby
+  Baby,
 } from "lucide-react";
 
 const EventDetail = () => {
@@ -114,15 +114,15 @@ const EventDetail = () => {
                     .map((child, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between border border-slate-100 rounded-lg p-3 bg-slate-50"
+                        className="flex flex-col sm:flex-row sm:items-center sm:justify-between border border-slate-100 rounded-lg p-3 bg-slate-50 gap-2 sm:gap-4"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 text-sm sm:text-base">
                           <Baby className="w-5 h-5 text-judo-blue" />
                           <span className="font-medium text-slate-800">
                             {child.name}
                           </span>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-slate-600">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-sm text-slate-600">
                           <div className="flex items-center gap-1">
                             <Phone className="w-4 h-4 text-gray-500" />
                             <span>{child.phoneNumber}</span>

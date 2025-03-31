@@ -1,24 +1,25 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import img from "../../imgs/logo.jpeg";
-import { UserCircle } from "lucide-react";
+import { useAuth } from '../context/AuthContext';
 
 const Header = ({ variant = "default"}) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  let firstName = '';
+  let lastName = '';
+  let initials = '';
 
   const getInitials = (firstName, lastName) => {
     const firstInitial = firstName?.charAt(0)?.toUpperCase() || "";
     const lastInitial = lastName?.charAt(0)?.toUpperCase() || "";
     return firstInitial + lastInitial;
   };
-
-  let firstName = '';
-  let lastName = '';
-  let initials = '';
   
   if (variant === "dashboard") {
-    firstName = JSON.parse(localStorage.getItem("firstName")) || "";
-    lastName = JSON.parse(localStorage.getItem("lastName")) || "";
+    firstName = user.firstName || "";
+    lastName = user.lastName || "";
     initials = getInitials(firstName, lastName);
   }
 

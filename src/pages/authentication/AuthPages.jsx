@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 import { ApiService } from "../../api/api.js";
 import Header from "../../components/Header.jsx";
+import { useAuth } from '../../context/AuthContext.jsx';
 
-const AuthPages = ({ currentPage, setUser }) => {
+
+const AuthPages = ({ currentPage }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(currentPage === "login");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   useEffect(() => {
     setIsLogin(currentPage === "login");
@@ -24,13 +27,11 @@ const AuthPages = ({ currentPage, setUser }) => {
     setNotification({ ...notification, open: false });
   };
 
-  {
-    /* KARECEK */
-  }
   const [loginForm, setLoginForm] = useState({
     email: "kosei@inoue.com",
     password: "kosei@inoue.com",
   });
+
   const [registerForm, setRegisterForm] = useState({
     firstName: "",
     lastName: "",
@@ -43,29 +44,14 @@ const AuthPages = ({ currentPage, setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const userEmail = isLogin ? loginForm.email : registerForm.email;
-
-    {
-      /* KARECEK */
-    }
-    if (
-      loginForm.email === "marecek@parecek.com" ||
-      loginForm.password === "123456"
-    ) {
-      navigate("/dashboard");
-      return;
-    }
 
     if (isLogin) {
       try {
-        const data = await ApiService.login(
+        const data = await login(
           loginForm.email,
           loginForm.password
         );
         if (data) {
-          localStorage.setItem("firstName", JSON.stringify(data.firstName));
-          localStorage.setItem("lastName", JSON.stringify(data.lastName));
-          localStorage.setItem("email", userEmail);
           navigate("/dashboard");
         }
       } catch (error) {
@@ -97,8 +83,7 @@ const AuthPages = ({ currentPage, setUser }) => {
           registerForm.password
         );
         if (data) {
-          localStorage.setItem("firstName", JSON.stringify(data.firstName));
-          localStorage.setItem("lastName", JSON.stringify(data.lastName));
+          login(registerForm.email, registerForm.password)
           navigate("/dashboard");
         }
       } catch (error) {

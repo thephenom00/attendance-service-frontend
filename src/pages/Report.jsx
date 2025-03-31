@@ -8,27 +8,32 @@ import { ApiService } from "../api/api.js";
 import { mapTrainingData } from "../utils/trainingUtils.js";
 import ReportTable from "../components/ReportTable.jsx";
 import TotalHoursCard from "../components/TotalHoursCard";
+import { useAuth } from '../context/AuthContext.jsx';
 
 const Report = () => {
   const [report, setReport] = useState([]);
-  const email = localStorage.getItem("email");
+  const { user } = useAuth();
+  const email = user.email;
 
   useEffect(() => {
+    if (!user || !user.email) return;
+  
     const fetchReport = async () => {
       try {
-        const reports = await ApiService.getTrainerCurrentMonthReport(email);
+        const reports = await ApiService.getTrainerCurrentMonthReport(user.email);
         setReport(reports);
       } catch (err) {
         console.error("Failed to fetch report", err);
       }
     };
+  
     fetchReport();
-  }, [email]);
+  }, [user]);
 
   const totalHours = report ? report.reduce((sum, training) => sum + training.hours, 0) : 0;
 
   return (
-    <div className="flex h-screen overflow-scroll">
+    <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-grow flex flex-col">
         <Header variant="dashboard" />

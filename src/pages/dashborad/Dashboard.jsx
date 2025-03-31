@@ -4,12 +4,14 @@ import Header from "../../components/Header.jsx";
 import { ApiService } from "../../api/api.js";
 import { mapTrainingData, getDayName } from "../../utils/trainingUtils.js";
 import TrainerDashboard from "./TrainerDashBoard.jsx";
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const Dashboard = () => {
-  const email = localStorage.getItem("email");
-  const role = localStorage.getItem("role");
   const [upcomingTrainings, setUpcomingTrainings] = useState([]);
   const [pastTrainings, setPastTrainings] = useState([]);
+  const { user } = useAuth();
+  const email = user.email;
+  const role = user.role;
 
   useEffect(() => {
     if (role === "ROLE_TRAINER") {
@@ -29,8 +31,10 @@ const Dashboard = () => {
 
       fetchTrainings();
     } else if (role === "ROLE_PARENT") {
+      
     }
   }, [email, role]);
+
 
   return (
     <div className="flex min-h-screen">
