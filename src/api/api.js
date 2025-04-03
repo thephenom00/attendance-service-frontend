@@ -1,6 +1,5 @@
 import API_CONFIG from "../config/api.config";
 
-
 const handleLogout = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
@@ -360,4 +359,22 @@ export const ApiService = {
       throw new Error("GET_PARENT_CONTACT");
     }
   },
+
+                                              /* PARENT */
+
+    /* XVIII GET PARENT UPCOMING TRAININGS */
+    getParentUpcomingTrainings: async (email) => {
+      try {
+        const response = await fetchWithConfig(`/parent/${email}/trainingUnit/upcoming`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response) {
+          console.log(response);
+        }
+        return response;
+      } catch (error) {
+        throw new Error("GET_PARENT_UPCOMING_TRAININGS");
+      }
+    },
 };

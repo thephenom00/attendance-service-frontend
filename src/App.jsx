@@ -11,6 +11,7 @@ import EventDetail from "./pages/EventDetail.jsx";
 import News from "./pages/News.jsx";
 
 
+
 function App() {
   const [user, setUser] = useState(null);
 

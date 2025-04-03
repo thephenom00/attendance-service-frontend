@@ -4,34 +4,45 @@ import Header from "../../components/Header.jsx";
 import { ApiService } from "../../api/api.js";
 import { mapTrainingData, getDayName } from "../../utils/trainingUtils.js";
 import TrainerDashboard from "./TrainerDashboard.jsx";
+// import ParentDashboard from "./ParentDashboard.jsx";
 import { useAuth } from '../../context/AuthContext.jsx';
 
 const Dashboard = () => {
-  const [upcomingTrainings, setUpcomingTrainings] = useState([]);
-  const [pastTrainings, setPastTrainings] = useState([]);
+  const [trainerUpcomingTrainings, setTrainerUpcomingTrainings] = useState([]);
+  const [trainerPastTrainings, setTrainerPastTrainings] = useState([]);
+
+  const [parentUpcomingTrainings, setParentUpcomingTrainings] = useState([]);
+  
   const { user } = useAuth();
   const email = user.email;
   const role = user.role;
 
   useEffect(() => {
     if (role === "ROLE_TRAINER") {
-      const fetchTrainings = async () => {
+      const fetchTrainerUpcomingTrainings = async () => {
         try {
-          const upcomingData = await ApiService.getTrainerUpcomingTrainings(
-            email
-          );
+          const upcomingData = await ApiService.getTrainerUpcomingTrainings(email);
           const pastData = await ApiService.getTrainerPastTrainings(email);
 
-          setUpcomingTrainings(upcomingData.map(mapTrainingData));
-          setPastTrainings(pastData.map(mapTrainingData));
+          setTrainerUpcomingTrainings(upcomingData.map(mapTrainingData));
+          setTrainerPastTrainings(pastData.map(mapTrainingData));
         } catch (err) {
           console.error("Failed to fetch trainings", err);
         }
       };
 
-      fetchTrainings();
+      fetchTrainerUpcomingTrainings();
     } else if (role === "ROLE_PARENT") {
-      
+      const fetchParentUpcomingTrainings = async () => {
+        try {
+          const upcomingData = await ApiService.getParentUpcomingTrainings(email);
+          setParentUpcomingTrainings(upcomingData);
+        } catch (err) {
+          console.error("Failed to fetch trainings", err);
+        }
+      };
+
+      fetchParentUpcomingTrainings();
     }
   }, [email, role]);
 
@@ -46,9 +57,9 @@ const Dashboard = () => {
         <main className="flex-grow p-8 bg-gray-50 space-y-8">
           {role === "ROLE_TRAINER" && (
             <TrainerDashboard
-              upcomingTrainings={upcomingTrainings}
-              pastTrainings={pastTrainings}
-              setPastTrainings={setPastTrainings}
+              upcomingTrainings={trainerUpcomingTrainings}
+              pastTrainings={trainerPastTrainings}
+              setPastTrainings={setTrainerPastTrainings}
             />
           )}
 
