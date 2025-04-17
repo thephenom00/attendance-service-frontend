@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Calendar, Clock, Users, MapPin, Banknote } from "lucide-react";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const EventCard = ({ events }) => {
@@ -76,16 +77,15 @@ const EventCard = ({ events }) => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    <button
+                    <Button
                       onClick={() =>
                         navigate(`/events/detail/${event.id}`, {
                           state: { event },
                         })
                       }
-                      className="mt-4 px-3 py-2 bg-judo-blue text-white rounded-md text-sm hover:bg-blue-600 hover:cursor-pointer transition-colors"
                     >
                       Detaily akce
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}

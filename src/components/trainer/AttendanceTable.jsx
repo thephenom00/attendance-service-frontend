@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { Check, Close } from "@mui/icons-material";
 import { AtSign, Users, Phone } from "lucide-react";
-import { ApiService } from "../api/api.js";
+import { ApiService } from "../../api/api.js";
 
 const AttendanceTable = ({ trainerAttendances, childAttendances }) => {
   const [trainers, setTrainers] = useState(trainerAttendances);

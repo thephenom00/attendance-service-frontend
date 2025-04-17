@@ -2,7 +2,7 @@ import React from "react";
 import { Calendar, Clock, Users, School, PersonStanding } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const UpcomingTrainings = ({ trainings }) => {  
+const TrainerUpcomingTrainings = ({ trainings }) => {  
   const navigate = useNavigate();
 
   return (
@@ -47,20 +47,20 @@ const UpcomingTrainings = ({ trainings }) => {
               <div className="flex items-center justify-center">
                 <School className="w-7 h-7 mr-2 text-judo-blue" />
                 <h3 className="font-medium text-[21px] text-slate-800">
-                  {training.location}
+                  {training.schoolName}
                 </h3>
               </div>
 
               <span className="text-sm px-2 py-1 bg-blue-50 text-judo-blue rounded-full">
                 <Users size={14} className="inline mr-1" />
-                {training.attendees}
+                {training.numberOfChildren}
               </span>
             </div>
 
             <div className="text-slate-600 space-y-2 text-sm">
               <div className="flex items-center">
                 <PersonStanding className="w-5 h-5 mr-2 text-judo-blue" />
-                <span className="text-[16px]">{training.title}</span>
+                <span className="text-[16px]">{training.name}</span>
               </div>
               <div className="flex items-center">
                 <Calendar className="w-5 h-5 mr-2 text-judo-blue" />
@@ -78,4 +78,4 @@ const UpcomingTrainings = ({ trainings }) => {
   );
 };
 
-export default UpcomingTrainings;
+export default TrainerUpcomingTrainings;

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Snackbar } from "@mui/material";
 import { ApiService } from "../../api/api.js";
 import Header from "../../components/Header.jsx";
-import { useAuth } from '../../context/AuthContext.jsx';
-
+import { useAuth } from "../../context/AuthContext.jsx";
+import { Button } from "@mui/material";
 
 const AuthPages = ({ currentPage }) => {
   const navigate = useNavigate();
@@ -28,8 +28,8 @@ const AuthPages = ({ currentPage }) => {
   };
 
   const [loginForm, setLoginForm] = useState({
-    email: "kosei@inoue.com",
-    password: "kosei@inoue.com",
+    email: "kingleduc1@gmail.com",
+    password: "kingleduc1@gmail.com",
   });
 
   const [registerForm, setRegisterForm] = useState({
@@ -47,20 +47,26 @@ const AuthPages = ({ currentPage }) => {
 
     if (isLogin) {
       try {
-        const data = await login(
-          loginForm.email,
-          loginForm.password
-        );
+        const data = await login(loginForm.email, loginForm.password);
         if (data) {
           navigate("/dashboard");
         }
       } catch (error) {
+        let message = "";
+
+        if (error.message === "Invalid credentials") {
+          message = "Zadaný e-mail nebo heslo není správné.";
+        } else if (error.message === "Failed to fetch") {
+          message = "Nepodařilo se spojit se serverem. Zkontrolujte připojení nebo kontaktujte administrátora.";
+        } else {
+          message = "Došlo k neočekávané chybě. Kontaktujte prosím administrátora.";
+        }
+        
         setNotification({
           open: true,
-          message: "Nesprávné přihlašovací údaje.",
+          message: message,
           severity: "error",
         });
-        console.error("Login error:", error);
       } finally {
         setLoading(false);
       }
@@ -83,7 +89,7 @@ const AuthPages = ({ currentPage }) => {
           registerForm.password
         );
         if (data) {
-          login(registerForm.email, registerForm.password)
+          login(registerForm.email, registerForm.password);
           navigate("/dashboard");
         }
       } catch (error) {
@@ -157,7 +163,7 @@ const AuthPages = ({ currentPage }) => {
                     value={registerForm.firstName}
                     onChange={(e) => {
                       const onlyLettersFirstName = e.target.value.replace(
-                        /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
+                        /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g,
                         ""
                       );
                       setRegisterForm({
@@ -179,7 +185,7 @@ const AuthPages = ({ currentPage }) => {
                     value={registerForm.lastName}
                     onChange={(e) => {
                       const onlyLettersLastName = e.target.value.replace(
-                        /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/g,
+                        /[^a-zA-ZáčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ ]/g,
                         ""
                       );
                       setRegisterForm({
@@ -299,21 +305,21 @@ const AuthPages = ({ currentPage }) => {
               )}
             </div>
 
-            <button
+            <Button
               type="submit"
+              variant="contained"
               disabled={loading}
-              className={`w-full text-white py-2 rounded-lg hover:cursor-pointer ${
-                loading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-judo-blue hover:bg-blue-800"
-              }`}
+              loading={loading}
+              className="w-full py-2 rounded-lg hover:cursor-pointer"
+              sx={{
+                backgroundColor: "#318CE7",
+                "&:hover": {
+                  backgroundColor: "#2574C4",
+                },
+              }}
             >
-              {loading
-                ? "Sekundička, za chvíli to bude..."
-                : isLogin
-                ? "Přihlásit se"
-                : "Registrovat"}
-            </button>
+              {isLogin ? "Přihlásit se" : "Registrovat"}
+            </Button>
           </form>
         </div>
       </div>

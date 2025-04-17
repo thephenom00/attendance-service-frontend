@@ -8,12 +8,15 @@ const handleLogout = () => {
 
 const refreshTokenApi = async (refreshToken) => {
   try {
-    const response = await fetchWithConfig(`/auth/refresh`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refreshToken }),
+    const response = await fetch(`${API_CONFIG.BASE_URL}/auth/refresh`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ refreshToken })
     });
-    return response;
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Failed to refresh token:", error);
     return null;
@@ -35,17 +38,15 @@ const fetchWithConfig = async (endpoint, options = {}, noBody = false) => {
   try {
     const response = await fetch(url, defaultOptions);
 
-    if (!response.status.toString().startsWith("2") && !response.status === "403") {
+    if (response.status === 403) {
       const refreshToken = localStorage.getItem("refresh_token");
 
       if (refreshToken && endpoint !== "/auth/refresh") {
         try {
-          console.log("REFRESH TOKEN")
           const authResponse = await refreshTokenApi(refreshToken);
           if (authResponse) {
             localStorage.setItem("access_token", authResponse.accessToken);
             localStorage.setItem("refresh_token", authResponse.refreshToken);
-            console.log(authResponse);
             return fetchWithConfig(endpoint, options, noBody);
           } else {
             handleLogout();
@@ -91,7 +92,7 @@ export const ApiService = {
   getTrainerUpcomingTrainings: async (email) => {
     try {
       const response = await fetchWithConfig(
-        `/trainer/${email}/trainingUnit/upcoming`,
+        `/trainer/${email}/training-unit/upcoming`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -110,7 +111,7 @@ export const ApiService = {
   getTrainerPastTrainings: async (email) => {
     try {
       const response = await fetchWithConfig(
-        `/trainer/${email}/trainingUnit/past`,
+        `/trainer/${email}/training-unit/past`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -129,7 +130,7 @@ export const ApiService = {
   updateTrainingUnitDescription: async (id, description) => {
     try {
       const response = await fetchWithConfig(
-        `/trainingUnit/${id}/description`,
+        `/training-unit/${id}/description`,
         {
           method: "PATCH",
           headers: {
@@ -150,7 +151,7 @@ export const ApiService = {
   /* VI GETS THE TRAINING UNIT BY ID */
   getTrainingUnitById: async (id) => {
     try {
-      const response = await fetchWithConfig(`/trainingUnit/${id}`, {
+      const response = await fetchWithConfig(`/training-unit/${id}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -167,7 +168,7 @@ export const ApiService = {
   getTrainerAttendancesByTrainingUnitId: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/trainingUnit/${id}/trainerAttendance`,
+        `/training-unit/${id}/trainer-attendance`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -186,7 +187,7 @@ export const ApiService = {
   getChildAttendancesByTrainingUnitId: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/trainingUnit/${id}/childAttendance`,
+        `/training-unit/${id}/child-attendance`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -205,7 +206,7 @@ export const ApiService = {
   markChildAttendancePresent: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/childAttendance/${id}/markPresent`,
+        `/child-attendance/${id}/mark-present`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -224,7 +225,7 @@ export const ApiService = {
   markChildAttendanceAbsent: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/childAttendance/${id}/markAbsent`,
+        `/child-attendance/${id}/mark-absent`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -243,7 +244,7 @@ export const ApiService = {
   markTrainerAttendancePresent: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/trainerAttendance/${id}/markPresent`,
+        `/trainer-attendance/${id}/mark-present`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -262,7 +263,7 @@ export const ApiService = {
   markTrainerAttendanceAbsent: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/trainerAttendance/${id}/markAbsent`,
+        `/trainer-attendance/${id}/mark-absent`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -280,10 +281,13 @@ export const ApiService = {
   /* XIII GETS TRAINERS REPORT FOR CURRENT MONTH*/
   getTrainerCurrentMonthReport: async (email) => {
     try {
-      const response = await fetchWithConfig(`/trainer/${email}/report/currentMonth`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetchWithConfig(
+        `/trainer/${email}/report/current-month`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (response) {
         console.log(response);
       }
@@ -313,7 +317,7 @@ export const ApiService = {
   getEventRegisteredChildren: async (id) => {
     try {
       const response = await fetchWithConfig(
-        `/event/${id}/getRegisteredChildren`,
+        `/event/${id}/registered-children`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -347,10 +351,13 @@ export const ApiService = {
   /* XVII GET PARENT CONTACT */
   getParentContact: async (id) => {
     try {
-      const response = await fetchWithConfig(`/childAttendance/${id}/parentContact`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetchWithConfig(
+        `/child-attendance/${id}/parent-contact`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (response) {
         console.log(response);
       }
@@ -360,21 +367,124 @@ export const ApiService = {
     }
   },
 
-                                              /* PARENT */
+  /* PARENT */
 
-    /* XVIII GET PARENT UPCOMING TRAININGS */
-    getParentUpcomingTrainings: async (email) => {
-      try {
-        const response = await fetchWithConfig(`/parent/${email}/trainingUnit/upcoming`, {
+  /* XVIII GET PARENT UPCOMING TRAININGS */
+  getParentUpcomingTrainings: async (email) => {
+    try {
+      const response = await fetchWithConfig(
+        `/parent/${email}/training-unit/upcoming`,
+        {
           method: "GET",
           headers: { "Content-Type": "application/json" },
-        });
+        }
+      );
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_PARENT_UPCOMING_TRAININGS");
+    }
+  },
+
+  /* XIX GET ALL CHILDREN OF A PARENT */
+  getParentChildren: async (email) => {
+    try {
+      const response = await fetchWithConfig(`/parent/${email}/children`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_PARENT_UPCOMING_TRAININGS");
+    }
+  },
+
+  /* XX GET ALL SCHOOLS */
+  getSchools: async () => {
+    try {
+      const response = await fetchWithConfig(`/school`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_SCHOOLS");
+    }
+  },
+
+  /* XXI GET TRAININGS BY SCHOOL ID */
+  getTrainingsBySchoolId: async (id) => {
+    try {
+      const response = await fetchWithConfig(`/school/${id}/trainings`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_TRAININGS_OF_SCHOOL");
+    }
+  },
+
+  /* XXII CREATE CHILD */
+  createChild: async (email, childDto) => {
+    try {
+      const response = await fetchWithConfig(`/parent/${email}/create-child`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(childDto),
+      });
+
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("CREATE_CHILD");
+    }
+  },
+
+  /* XXIII */
+  getChildrenEventStatus: async (email, eventId) => {
+    try {
+      const response = await fetchWithConfig(`/parent/${email}/children/event-status/${eventId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      })
+      if (response) {
+        console.log(response);
+      }
+      return response;
+    } catch (error) {
+      throw new Error("GET_CHILDREN_EVENT_STATUS");
+    }  
+  },
+
+    /* XXIIV */
+    registerChildToEvent: async (childId, eventId) => {
+      try {
+        const response = await fetchWithConfig(`/child/${childId}/register-to-event/${eventId}`,         {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+        })
         if (response) {
           console.log(response);
         }
         return response;
       } catch (error) {
-        throw new Error("GET_PARENT_UPCOMING_TRAININGS");
-      }
-    },
+        throw new Error("REGISTER_CHILD_TO_EVENT");
+      }  
+    }
 };

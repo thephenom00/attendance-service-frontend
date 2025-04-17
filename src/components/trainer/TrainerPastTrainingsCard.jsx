@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Calendar, Clock, Pen, School, PersonStanding } from "lucide-react";
-import { ApiService } from "../api/api.js";
+import { ApiService } from "../../api/api.js";
 
 const PastTraininigsCard = ({ trainings, setTrainings }) => {
   const [editingId, setEditingId] = useState(null);
@@ -80,7 +80,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                   <div className="flex items-center justify-center">
                     <School className="w-6 h-6 mr-2 text-gray-600" />
                     <h3 className="font-medium text-[19px] text-gray-600">
-                      {training.location}
+                      {training.schoolName}
                     </h3>
                   </div>
                 </div>
@@ -88,7 +88,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
                 <div className="text-slate-600 space-y-2 text-sm">
                   <div className="flex items-center">
                     <PersonStanding className="w-[16px] h-[16px] mr-2 text-gray-600" />
-                    <span className="text-[16px]">{training.title}</span>
+                    <span className="text-[16px]">{training.name}</span>
                   </div>
                   <div className="flex items-center">
                     <Clock className="w-[16px] h-[16px] mr-2 text-gray-600" />
@@ -101,7 +101,7 @@ const PastTraininigsCard = ({ trainings, setTrainings }) => {
 
                   <div className="flex flex-col">
                     <div className="flex overflow-auto">
-                      <Pen className="w-[16px] h-[16px] mr-2" />
+                      <Pen className="w-[16px] h-[16px] mr-2 flex-shrink-0" />
                       {editingId === training.id ? (
                         <textarea
                           className="border border-gray-300 rounded m-2 text-[14px] w-full"

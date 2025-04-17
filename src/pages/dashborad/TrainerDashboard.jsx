@@ -1,11 +1,11 @@
 import React from "react";
-import UpcomingTrainingsCard from "../../components/UpcomingTrainingsCard";
-import PastTrainingsCard from "../../components/PastTrainingsCard";
+import TrainerUpcomingTrainingsCard from "../../components/trainer/TrainerUpcomingTrainingsCard";
+import TrainerPastTrainingsCard from "../../components/trainer/TrainerPastTrainingsCard";
 
 const TrainerDashboard = ({ upcomingTrainings, pastTrainings, setPastTrainings }) => (
   <>
-    <UpcomingTrainingsCard trainings={upcomingTrainings} />
-    <PastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
+    <TrainerUpcomingTrainingsCard trainings={upcomingTrainings} />
+    <TrainerPastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
   </>
 );
 

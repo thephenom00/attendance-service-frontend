@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
-import AttendanceSchoolCard from "../components/AttendanceSchoolCard.jsx";
+import AttendanceSchoolCard from "../components/trainer/AttendanceSchoolCard.jsx";
 import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
 import { mapTrainingData } from "../utils/trainingUtils.js";
-import AttendanceTable from "../components/AttendanceTable.jsx";
+import AttendanceTable from "../components/trainer/AttendanceTable.jsx";
 
 const Attendance = () => {
   const { id } = useParams();

@@ -1,6 +1,6 @@
 import { ChevronRight, Calendar, ClipboardList, UserPlus } from "lucide-react";
 import React from "react";
-import Button from "../components/Button";
+import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import img from "../../imgs/logo-better.jpg";
 import Header from "../components/Header";
@@ -30,17 +30,21 @@ const LandingPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
+                  variant="contained"
                   onClick={() => navigate("/register")}
-                  size="lg"
+                  size="large"
                   className="w-[200px] sm:w-auto button-hover"
+                  sx={{
+                    backgroundColor: '#318CE7'
+                  }}
                 >
                   Vyzkoušet nyní
                   <ChevronRight size={16} className="ml-1" />
                 </Button>
                 <Button
                   onClick={() => navigate("/login")}
-                  variant="outline"
-                  size="lg"
+                  variant="outlined"
+                  size="large"
                   className="w-[150px] sm:w-auto button-hover"
                 >
                   Přihlásit se
@@ -124,15 +128,20 @@ const LandingPage = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 onClick={() => navigate("/register")}
-                size="lg"
+                size="large"
+                variant="outlined"
                 className="w-full sm:w-auto button-hover"
+                sx={{
+                  backgroundColor: '#318CE7',
+                  color: "white"
+                }}
               >
                 Zaregistrovat
               </Button>
               <Button
                 onClick={() => navigate("/login")}
-                variant="outline"
-                size="lg"
+                size="large"
+                variant="outlined"
                 className="w-full sm:w-auto button-hover"
               >
                 Přihlásit se

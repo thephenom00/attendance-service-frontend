@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
-import AttendanceSchoolCard from "../components/AttendanceSchoolCard.jsx";
 import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
-import { mapTrainingData } from "../utils/trainingUtils.js";
-import ReportTable from "../components/ReportTable.jsx";
-import TotalHoursCard from "../components/TotalHoursCard";
+import ReportTable from "../components/trainer/ReportTable.jsx";
+import TotalHoursCard from "../components/trainer/TotalHoursCard";
 import { useAuth } from '../context/AuthContext.jsx';
 
 const Report = () => {

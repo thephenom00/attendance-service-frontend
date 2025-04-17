@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Calendar, Clock, School, PersonStanding, Pen } from "lucide-react";
-import { ApiService } from "../api/api.js";
+import { ApiService } from "../../api/api.js";
 
 const AttendanceShoolCard = ({ training, setTraining }) => {
   const [editingId, setEditingId] = useState(null);
@@ -43,7 +43,7 @@ const AttendanceShoolCard = ({ training, setTraining }) => {
         <div className="flex items-center space-x-3">
           <School className="w-8 h-8 text-judo-blue" />
           <h3 className="font-medium text-[22px] text-slate-800 text-center">
-            {training.location}
+            {training.schoolName}
           </h3>
         </div>
       </div>
@@ -51,7 +51,7 @@ const AttendanceShoolCard = ({ training, setTraining }) => {
       <div className="flex flex-col sm:flex-row sm:justify-center sm:space-x-4 space-y-3 sm:space-y-0 text-slate-600 text-sm mb-6">
         <div className="flex items-center">
           <PersonStanding className="w-5 h-5 mr-2 text-judo-blue" />
-          <span className="text-[16px]">{training.title}</span>
+          <span className="text-[16px]">{training.name}</span>
         </div>
         <div className="flex items-center">
           <Calendar className="w-5 h-5 mr-2 text-judo-blue" />

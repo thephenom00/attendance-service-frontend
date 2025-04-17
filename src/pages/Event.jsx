@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
 import EventCard from "../components/EventCard.jsx";
 import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
 import { formatDate, formatTime } from "../utils/trainingUtils.js";
+import Loading from "../components/Loading.jsx";
 
 const Event = () => {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
+        setLoading(true);
         const data = await ApiService.getEvents();
         const formatted = data.map((event) => ({
           ...event,
@@ -20,11 +23,13 @@ const Event = () => {
           endDate: event.endDate ? formatDate(event.endDate) : null,
           startTime: event.startTime ? formatTime(event.startTime) : null,
           endTime: event.endTime ? formatTime(event.endTime) : null,
-          price: event.price.toLocaleString("cs-CZ")
+          price: event.price.toLocaleString("cs-CZ"),
         }));
         setEvents(formatted);
       } catch (err) {
         console.error("Failed to fetch events", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchEvent();
@@ -46,7 +51,7 @@ const Event = () => {
           </Link>
         </div>
         <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-          <EventCard events={events} />
+          {loading ? <Loading message={"Načítám akce"}/> : <EventCard events={events} />}
         </main>
       </div>
     </div>

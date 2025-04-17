@@ -8,15 +8,15 @@ import {
   LogOut,
   Menu,
   X,
-  Newspaper
+  Newspaper,
+  CircleHelp,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [role, setRole] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
 
@@ -29,17 +29,15 @@ const Sidebar = () => {
 
   const parentLinks = [
     { name: "Přehled", path: "/dashboard", icon: Home },
-    { name: "Příhlásit na trénink", path: "/schools", icon: FileText },
+    { name: "Registrovat na trénink", path: "/register-child", icon: FileText },
     { name: "Akce", path: "/events", icon: Calendar },
     { name: "Moje dítě", path: "/my-child", icon: ClipboardList },
   ];
 
-  const adminLinks = [
-    { name: "Přehled", path: "/dashboard", icon: Home },
-  ];
+  const adminLinks = [{ name: "Přehled", path: "/dashboard", icon: Home }];
 
   function getLinks(role) {
-    switch(role) {
+    switch (role) {
       case "ROLE_TRAINER":
         return trainerLinks;
       case "ROLE_PARENT":
@@ -55,7 +53,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Hamburger Button only visible on small screens */}
       <div className="fixed top-4 left-4 z-50 md:hidden">
         <button
           onClick={() => setIsOpen(true)}
@@ -72,15 +69,12 @@ const Sidebar = () => {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
-            fixed top-0 w-60 md:w-[250px] left-0 z-50 bg-white min-h-screen transition-transform duration-300 flex flex-col 
+            fixed top-0 w-70 md:w-[250px] flex-shrink-0 left-0 z-50 bg-white min-h-screen transition-transform duration-300 flex flex-col 
             ${isOpen ? "translate-x-0" : "-translate-x-full"} 
             md:translate-x-0 md:relative md:flex`}
-        >
-
-        {/* Close Button on small screens */}
+      >
         <div className="flex items-center justify-end p-4 md:hidden">
           <button
             onClick={() => setIsOpen(false)}
@@ -90,7 +84,6 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* Navigation */}
         <nav className="flex flex-col px-4 pt-4 flex-grow">
           {links.map((link) => {
             const isActive = location.pathname === link.path;
@@ -113,14 +106,30 @@ const Sidebar = () => {
             );
           })}
 
-          <div className="mt-auto border-t border-gray-300 pt-4">
+
+          <div className="mt-6 border-t border-gray-300 pt-4 ">
             <button
               onClick={() => {
-                logout()
+                navigate("/help");
+                setIsOpen(false);
+              }}
+              className={`w-full flex items-center p-3 rounded-lg transition-colors hover:cursor-pointer ${
+                location.pathname === "/help"
+                  ? "bg-[#eef5ff] text-[#0177c8]"
+                  : "text-gray-800 hover:bg-gray-100"
+              }`}
+            >
+              <CircleHelp size={20} />
+              <span className="ml-3 font-medium">Nápověda</span>
+            </button>
+
+            <button
+              onClick={() => {
+                logout();
                 navigate("/");
                 setIsOpen(false);
               }}
-              className="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
+              className="w-full flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
             >
               <LogOut size={20} />
               <span className="ml-3 font-medium">Odhlásit se</span>
