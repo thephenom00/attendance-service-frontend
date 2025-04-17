@@ -33,7 +33,7 @@ const LandingPage = () => {
                   variant="contained"
                   onClick={() => navigate("/register")}
                   size="large"
-                  className="w-[200px] sm:w-auto button-hover"
+                  className="w-[210px] sm:w-auto button-hover"
                   sx={{
                     backgroundColor: '#318CE7'
                   }}
@@ -45,7 +45,7 @@ const LandingPage = () => {
                   onClick={() => navigate("/login")}
                   variant="outlined"
                   size="large"
-                  className="w-[150px] sm:w-auto button-hover"
+                  className="w-[160px] sm:w-auto button-hover"
                 >
                   Přihlásit se
                 </Button>
