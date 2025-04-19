@@ -19,7 +19,7 @@ const ParentDashboard = ({ upcomingTrainings, news, children, isLoading }) => {
   );
 
   if (isLoading) {
-    return <Loading message={"Načítám tréninky"} />;
+    return <Loading/>;
   }
 
   return (

@@ -5,7 +5,7 @@ import Loading from "../../components/Loading"; // Make sure this path is correc
 
 const TrainerDashboard = ({ upcomingTrainings, pastTrainings, setPastTrainings, isLoading }) => {
   if (isLoading) {
-    return <Loading message={"Načítám tréninky"} />;
+    return <Loading />;
   }
 
   return (

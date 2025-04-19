@@ -51,7 +51,7 @@ const Event = () => {
           </Link>
         </div>
         <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-          {loading ? <Loading message={"Načítám akce"}/> : <EventCard events={events} />}
+          {loading ? <Loading/> : <EventCard events={events} />}
         </main>
       </div>
     </div>
