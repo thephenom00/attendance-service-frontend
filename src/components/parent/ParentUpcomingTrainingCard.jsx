@@ -75,7 +75,7 @@ const ParentUpcomingTrainingCard = ({ trainings }) => {
 
               <div className="text-slate-600 space-y-2 text-sm">
               <div className="flex items-center">
-                  <Baby className="w-5 h-5 mr-2 text-judo-blue" />
+                  <Baby className="w-5 h-5 mr-2 text-judo-blue flex-shrink-0" />
                   <span className="text-[16px]">
                     Dítě: {" "}
                     {training.childNames.join(", ")}
@@ -83,14 +83,14 @@ const ParentUpcomingTrainingCard = ({ trainings }) => {
                 </div>
 
                 <div className="flex items-center">
-                  <Users className="w-5 h-5 mr-2 text-judo-blue" />
+                  <Users className="w-5 h-5 mr-2 text-judo-blue flex-shrink-0" />
                   <span className="text-[16px]">
                     Trenér:{" "}
                     {training.trainerNames.join(", ")}
                   </span>
                 </div>
                 <div className="flex items-center">
-                  <Phone className="w-5 h-5 mr-2 text-judo-blue" />
+                  <Phone className="w-5 h-5 mr-2 text-judo-blue flex-shrink-0" />
                   <span className="text-[16px]">
                     {training.trainerPhoneNumbers.join(", ")}
                   </span>

@@ -50,7 +50,7 @@ const EventCard = ({ events }) => {
 
                   <div className="text-slate-600 space-y-2 text-sm">
                     <div className="flex items-center">
-                      <Calendar className="w-5 h-5 mr-2 text-judo-blue" />
+                      <Calendar className="w-5 h-5 mr-2 text-judo-blue shrink-0" />
                       <span className="text-[16px]">
                         {event.endDate
                           ? `${event.startDate} - ${event.endDate}`
@@ -58,19 +58,19 @@ const EventCard = ({ events }) => {
                       </span>
                     </div>
                     <div className="flex items-center">
-                      <MapPin className="w-5 h-5 mr-2 text-judo-blue" />
+                      <MapPin className="w-5 h-5 mr-2 text-judo-blue shrink-0" />
                       <span className="text-[16px]">{event.location}</span>
                     </div>
                     {event.startTime && event.endTime && (
                       <div className="flex items-center">
-                        <Clock className="w-5 h-5 mr-2 text-judo-blue" />
+                        <Clock className="w-5 h-5 mr-2 text-judo-blue shrink-0" />
                         <span className="text-[16px]">
                           {event.startTime} - {event.endTime}
                         </span>
                       </div>
                     )}
                     <div className="flex items-center">
-                      <Banknote className="w-5 h-5 mr-2 text-judo-blue" />
+                      <Banknote className="w-5 h-5 mr-2 text-judo-blue shrink-0" />
                       <span className="text-[16px]">
                         {event.price !== "0" ? `${event.price} Kč` : "Zdarma"}
                       </span>
