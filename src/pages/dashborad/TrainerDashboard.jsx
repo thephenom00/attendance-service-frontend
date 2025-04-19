@@ -1,12 +1,19 @@
 import React from "react";
 import TrainerUpcomingTrainingsCard from "../../components/trainer/TrainerUpcomingTrainingsCard";
 import TrainerPastTrainingsCard from "../../components/trainer/TrainerPastTrainingsCard";
+import Loading from "../../components/Loading"; // Make sure this path is correct
 
-const TrainerDashboard = ({ upcomingTrainings, pastTrainings, setPastTrainings }) => (
-  <>
-    <TrainerUpcomingTrainingsCard trainings={upcomingTrainings} />
-    <TrainerPastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
-  </>
-);
+const TrainerDashboard = ({ upcomingTrainings, pastTrainings, setPastTrainings, isLoading }) => {
+  if (isLoading) {
+    return <Loading message={"Načítám tréninky"} />;
+  }
+
+  return (
+    <>
+      <TrainerUpcomingTrainingsCard trainings={upcomingTrainings} />
+      <TrainerPastTrainingsCard trainings={pastTrainings} setTrainings={setPastTrainings} />
+    </>
+  );
+};
 
 export default TrainerDashboard;

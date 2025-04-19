@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useParams, Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar.jsx";
 import Header from "../components/Header.jsx";
@@ -7,6 +7,7 @@ import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
 import { mapTrainingData } from "../utils/trainingUtils.js";
 import AttendanceTable from "../components/trainer/AttendanceTable.jsx";
+import Loading from "../components/Loading.jsx";
 
 const Attendance = () => {
   const { id } = useParams();
@@ -15,9 +16,12 @@ const Attendance = () => {
   const [trainerAttendances, setTrainerAttendances] = useState();
   const [childAttendances, setchildAttendances] = useState();
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const training = await ApiService.getTrainingUnitById(id);
         setTraining(mapTrainingData(training));
 
@@ -31,6 +35,8 @@ const Attendance = () => {
         setchildAttendances(childAtt);
       } catch (err) {
         console.error("Failed to fetch trainings", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -53,19 +59,25 @@ const Attendance = () => {
           </Link>
         </div>
         <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-          {training ? (
-            <AttendanceSchoolCard
-              training={training}
-              setTraining={setTraining}
-            />
+          {loading ? (
+            <Loading />
           ) : (
-            <p>No training data found.</p>
-          )}
-          {trainerAttendances && childAttendances && (
-            <AttendanceTable
-              trainerAttendances={trainerAttendances}
-              childAttendances={childAttendances}
-            />
+            <>
+              {training ? (
+                <AttendanceSchoolCard
+                  training={training}
+                  setTraining={setTraining}
+                />
+              ) : (
+                <p>No training data found.</p>
+              )}
+              {trainerAttendances && childAttendances && (
+                <AttendanceTable
+                  trainerAttendances={trainerAttendances}
+                  childAttendances={childAttendances}
+                />
+              )}
+            </>
           )}
         </main>
       </div>

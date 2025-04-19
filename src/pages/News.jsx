@@ -5,18 +5,23 @@ import { Link } from "react-router-dom";
 import NewsCard from "../components/NewsCard.jsx";
 import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
+import Loading from "../components/Loading.jsx";
 
 const News = () => {
   const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        setLoading(true);
         const news = await ApiService.getNews();
 
         setNews(news);
       } catch (err) {
         console.error("Failed to fetch trainings", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -40,7 +45,7 @@ const News = () => {
         </div>
 
         <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-          <NewsCard news={news}/>
+          {loading ? <Loading /> : <NewsCard news={news} />}
         </main>
       </div>
     </div>

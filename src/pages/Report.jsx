@@ -6,29 +6,38 @@ import { ArrowLeft } from "lucide-react";
 import { ApiService } from "../api/api.js";
 import ReportTable from "../components/trainer/ReportTable.jsx";
 import TotalHoursCard from "../components/trainer/TotalHoursCard";
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from "../context/AuthContext.jsx";
+import Loading from "../components/Loading.jsx";
 
 const Report = () => {
   const [report, setReport] = useState([]);
   const { user } = useAuth();
   const email = user.email;
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user || !user.email) return;
-  
+
     const fetchReport = async () => {
       try {
-        const reports = await ApiService.getTrainerCurrentMonthReport(user.email);
+        setLoading(true);
+        const reports = await ApiService.getTrainerCurrentMonthReport(
+          user.email
+        );
         setReport(reports);
       } catch (err) {
         console.error("Failed to fetch report", err);
+      } finally {
+        setLoading(false);
       }
     };
-  
+
     fetchReport();
   }, [user]);
 
-  const totalHours = report ? report.reduce((sum, training) => sum + training.hours, 0) : 0;
+  const totalHours = report
+    ? report.reduce((sum, training) => sum + training.hours, 0)
+    : 0;
 
   return (
     <div className="flex min-h-screen">
@@ -45,8 +54,14 @@ const Report = () => {
           </Link>
         </div>
         <main className="flex-grow p-8 bg-gray-50 flex flex-col gap-6 items-center">
-          <TotalHoursCard totalHours={totalHours} />
-          <ReportTable trainerReport={report} />
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <TotalHoursCard totalHours={totalHours} />
+              <ReportTable trainerReport={report} />
+            </>
+          )}
         </main>
       </div>
     </div>

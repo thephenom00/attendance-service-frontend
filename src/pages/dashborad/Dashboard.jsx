@@ -12,7 +12,7 @@ const Dashboard = () => {
   const [trainerUpcomingTrainings, setTrainerUpcomingTrainings] = useState([]);
   const [trainerPastTrainings, setTrainerPastTrainings] = useState([]);
 
-  const [isParentLoading, setIsParentLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [parentUpcomingTrainings, setParentUpcomingTrainings] = useState([]);
   const [news, setNews] = useState([]);
   const [children, setChildren] = useState([]);
@@ -28,6 +28,7 @@ const Dashboard = () => {
     if (role === "ROLE_TRAINER") {
       const fetchTrainerUpcomingTrainings = async () => {
         try {
+          setLoading(true);
           const upcomingData = await ApiService.getTrainerUpcomingTrainings(email);
           const pastData = await ApiService.getTrainerPastTrainings(email);
 
@@ -35,14 +36,16 @@ const Dashboard = () => {
           setTrainerPastTrainings(pastData.map((t) => mapTrainingData(t, true)));
         } catch (err) {
           console.error("Failed to fetch trainings", err);
+        } finally {
+          setLoading(false);
         }
       };
 
       fetchTrainerUpcomingTrainings();      
     } else if (role === "ROLE_PARENT") {
       const fetchParentData = async () => {
-        setIsParentLoading(true);
         try {
+          setLoading(true);
           const [upcomingData, childrenData, newsData] = await Promise.all([
             ApiService.getParentUpcomingTrainings(email),
             ApiService.getParentChildren(email),
@@ -55,7 +58,7 @@ const Dashboard = () => {
         } catch (err) {
           console.error("Failed to fetch parent data", err);
         } finally {
-          setIsParentLoading(false);
+          setLoading(false);
         }
       };
     
@@ -80,6 +83,7 @@ const Dashboard = () => {
               upcomingTrainings={trainerUpcomingTrainings}
               pastTrainings={trainerPastTrainings}
               setPastTrainings={setTrainerPastTrainings}
+              isLoading={loading}
             />
           )}
 
@@ -88,7 +92,7 @@ const Dashboard = () => {
             upcomingTrainings={parentUpcomingTrainings}
             news={news}
             children={children}
-            isLoading={isParentLoading}
+            isLoading={loading}
           />
           )}
         </main>
